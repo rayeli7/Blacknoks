@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "721697615840",
+    "project_id": "blacknoks-1",
+    "storage_bucket": "blacknoks-1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721697615840:android:7b11695ebc11c9c0ae0585",
+        "android_client_info": {
+          "package_name": "com.RaymodEli.blacknoks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721697615840-kns5qfjbean3eurvbk50lrg0ok8a83q9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.RaymodEli.blacknoks",
+            "certificate_hash": "0a25f37477f9f4456a002bb4ff3d3738a9f29d16"
+          }
+        },
+        {
+          "client_id": "721697615840-dn4rcj95bqjmccfn3opedo7clj2tg3rd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyui76MbuzrNWUhOu-p9ZGRZjnzMLBKjY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721697615840-dn4rcj95bqjmccfn3opedo7clj2tg3rd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

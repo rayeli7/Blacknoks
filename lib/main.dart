@@ -1,0 +1,61 @@
+import 'package:blacknoks/ui/home.dart';
+import 'package:flutter/material.dart';
+import 'package:blacknoks/ui/login_page.dart';
+import 'package:blacknoks/backend_serv/auth_service.dart';
+
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+
+Future <void> main() async {
+WidgetsFlutterBinding.ensureInitialized(); 
+await Firebase.initializeApp();
+runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        Provider<AuthenticationService>(
+          create: (_) => AuthenticationService(FirebaseAuth.instance),
+        ),
+        StreamProvider(
+          create: (context) => context.read<AuthenticationService>().authStateChanges, initialData: null,
+        )
+      ],
+    child:MaterialApp(
+      // Application name
+      title: 'Blacknoks',
+      // Application theme data, you can set the colors for the application as
+      // you want
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      // A widget which will be started on application startup
+      home: const AuthenticationWrapper(),
+    ),
+    );
+  }
+}
+
+
+class AuthenticationWrapper extends StatelessWidget {
+  const AuthenticationWrapper({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final firebaseUser = context.watch<User?>();
+
+    // ignore: unnecessary_null_comparison
+    if (firebaseUser != null) {
+      return const Homepage();
+    }
+    return const LoginPage();
+  }
+}
