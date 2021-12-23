@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:core';
+
 import 'package:blacknoks/api(s)/fetch_api.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -19,18 +22,28 @@ class _HomeState extends State<Homepage> {
       _selectedIndex = index;
     });
   }
-  late Future<LiveStockData> futureLiveStockData;
+    var livestockdata = <LiveStockData>[];
 
-//  final List<Widget> tabs = [
-//    PortfolioSection(),
-//    MarketsSection(),
-//    SearchSection(),
-//  ];
-@override
-  void initState() {
-    super.initState();
-    futureLiveStockData = fetchLiveData();
+  _getLiveStockData() {
+    API.getLiveStockData().then((response) {
+      setState(() {
+        Iterable list = json.decode(response.body);
+        livestockdata = list.map((model) => LiveStockData.fromJson(model)).toList();
+      });
+    });
   }
+
+  @override
+  initState() {
+    super.initState();
+    _getLiveStockData();
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,21 +53,12 @@ class _HomeState extends State<Homepage> {
 
         ),
       backgroundColor: Colors.white,
-      body: Center(
-          child: FutureBuilder<LiveStockData>(
-            future: futureLiveStockData,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Text(snapshot.data!.name);
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-
-              // By default, show a loading spinner.
-              return const CircularProgressIndicator();
-            },
-          ),
-          ),
+      body: ListView.builder(
+          itemCount: livestockdata.length,
+          itemBuilder: (context, index) {
+            return ListTile(title: Text(livestockdata[index].name!));
+             },
+             ),
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),

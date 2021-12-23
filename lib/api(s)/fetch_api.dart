@@ -1,44 +1,36 @@
 import 'package:http/http.dart' as http;
-
 import 'dart:async';
-import 'dart:convert';
 
+const baseUrl = "https://dev.kwayisi.org/apis/gse/live";
 
-
-Future<LiveStockData> fetchLiveData() async {
-  final response = await http
-      .get(Uri.parse('https://dev.kwayisi.org/apis/gse/live/MTNGH'),);
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return LiveStockData.fromJson(jsonDecode(response.body));
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load data');
+class API {
+  static Future getLiveStockData() {
+    var url = baseUrl; //+ "/stockname";
+    return http.get(Uri.parse(url));
   }
 }
 
 class LiveStockData {
-  final double change;
-  final String name;
-  final double price ;
-  final int volume;
+  double? change;
+  String? name;
+  double? price;
+  int? volume;
 
- LiveStockData({
-    required this.change,
-    required this.name,
-    required this.price,
-    required this.volume,
-  });
+  LiveStockData(double change, String name, double price, int volume) {
+    this.change = change;
+    this.name = name;
+    this.price = price;
+    this.volume = volume;
+  }
 
-  factory LiveStockData.fromJson(Map<String, dynamic> json) {
-    return LiveStockData(
-      change: json['change'],
-      name: json['name'],
-      price: json['price'],
-      volume: json['volume'],
-    );
+  LiveStockData.fromJson(Map json)
+      : change = json['change'],
+        name = json['name'],
+        price = json['price'],
+        volume = json['volume'];
+
+  Map toJson() {
+    return {'change': change, 'name': name, 'price': price, 'volume': price};
   }
 }
+
