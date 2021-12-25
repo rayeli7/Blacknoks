@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:core';
+import 'dart:ui';
 
 import 'package:blacknoks/api(s)/fetch_api.dart';
+import 'package:blacknoks/ui/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -48,23 +50,56 @@ class _HomeState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar:AppBar(
+        title: const Text('Home'),
+                actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.add_alert),
+            tooltip: 'Show Snackbar',
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('This is a snackbar')));
+            },
+          ),
+                ]
+      ), 
       drawer: Container(
         height: MediaQuery.of(context).size.height / 14,
 
         ),
       backgroundColor: Colors.white,
-      body: ListView.builder(
-          itemCount: livestockdata.length,
-          itemBuilder: (context, index) {
-            return ListTile(title: Text(livestockdata[index].name!));
-             },
-             ),
+      body: 
+          ListView.builder(
+              itemCount: livestockdata.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: (){} ,
+
+                  title: Text(livestockdata[index].name!),
+
+                  subtitle: Text(
+                    GSE_Companies[index],
+                    style:const TextStyle(
+                      color: Colors.blueAccent
+                    ),
+                    ),
+
+                  trailing:Text(
+                    livestockdata[index].price!.toString(),
+                    style: const TextStyle(
+                    color: Colors.redAccent),
+                    ),
+
+                  );
+                 },
+                 ),
+       
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
           child: GNav(
-            activeColor: Colors.grey,
-            iconSize: 24,
+            activeColor: Colors.black,
+            iconSize:30 ,
             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
             selectedIndex: _selectedIndex,
             tabs: _bottomNavigationBarItemItems(),
@@ -79,12 +114,12 @@ class _HomeState extends State<Homepage> {
     return [
       const GButton(
         icon: FontAwesomeIcons.home,
-        iconColor: Colors.white,
+        iconColor: Colors.grey,
         text: 'Home',
       ),
       const GButton(
         icon: FontAwesomeIcons.search,
-        iconColor: Colors.white,
+        iconColor: Colors.grey,
         text: 'Search',
       ),
     ];
