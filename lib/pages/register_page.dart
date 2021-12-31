@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:blacknoks/widgets/custom_checkbox.dart';
-import 'theme.dart';
+import '../models/theme.dart';
 
 
 

@@ -1,7 +1,7 @@
-import 'package:blacknoks/ui/register_page.dart';
+import 'package:blacknoks/pages/register_page.dart';
 import 'package:flutter/material.dart';
 
-import 'package:blacknoks/ui/theme.dart';
+import 'package:blacknoks/models/theme.dart';
 import 'package:blacknoks/widgets/custom_checkbox.dart';
 
 
