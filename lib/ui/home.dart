@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'dart:core';
-import 'dart:ui';
 
 import 'package:blacknoks/api(s)/fetch_api.dart';
-import 'package:blacknoks/ui/theme.dart';
+
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/services.dart';
+
 
 
 
@@ -18,14 +17,17 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomeState extends State<Homepage> {
-  int _selectedIndex = 0;
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-    var livestockdata = <LiveStockData>[];
+  final TextEditingController stockOrderVolumeController= TextEditingController(text: '100');
+  var livestockdata = <LiveStockData>[];
 
+  int _selectedIndex = 0; 
+
+  void _onItemTapped(int index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            }
+   
   _getLiveStockData() {
     API.getLiveStockData().then((response) {
       setState(() {
@@ -34,6 +36,7 @@ class _HomeState extends State<Homepage> {
       });
     });
   }
+
 
   @override
   initState() {
@@ -45,12 +48,13 @@ class _HomeState extends State<Homepage> {
   dispose() {
     super.dispose();
   }
-
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
         title: const Text('Home'),
                 actions: <Widget>[
           IconButton(
@@ -64,64 +68,161 @@ class _HomeState extends State<Homepage> {
                 ]
       ), 
       drawer: Container(
-        height: MediaQuery.of(context).size.height / 14,
-
+      height: MediaQuery.of(context).size.height,
         ),
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white70,
       body: 
           ListView.builder(
               itemCount: livestockdata.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  onTap: (){} ,
+              itemBuilder: (context, index) {                
+                double? currentStockPrice = livestockdata[index].price!;
+                String? currentStockName = livestockdata[index].name!;
+                return Card(
+                  elevation: 2,
+                  child: ListTile(
+                    textColor: Colors.black,
+                    enableFeedback: true,
 
-                  title: Text(livestockdata[index].name!),
-
-                  subtitle: Text(
-                    GSE_Companies[index],
+                    title: Text(livestockdata[index].name!,
                     style:const TextStyle(
-                      color: Colors.blueAccent
+                        color: Colors.black,)
                     ),
+                
+                    subtitle: Text(
+                      GSE_Companies[index],
+                      style:const TextStyle(
+                        color: Colors.grey,
+                      ),
                     ),
-
-                  trailing:Text(
-                    livestockdata[index].price!.toString(),
-                    style: const TextStyle(
-                    color: Colors.redAccent),
+                
+                    trailing:Column(
+                      children: [
+                        SizedBox(
+                          width: 90,
+                          child: ElevatedButton(
+                            onPressed: ()=>showModalBottomSheet(
+                              context: context,
+                               builder: (context)=>
+                               Container(
+                                  height: MediaQuery.of(context).size.height,
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(1),
+                                  ),
+                                  child: ListView(
+                                    children: <Widget>[
+                                      const ListTile(),
+                                      TextField(
+                                        controller: stockOrderVolumeController,
+                                        keyboardType: TextInputType.number,
+                                        style: Theme.of(context).textTheme.headline4,
+                                        decoration: const InputDecoration(
+                                          labelText: 'Enter Volume',
+                                          //errorText: ,
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                          ), 
+                                        ),
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.digitsOnly,
+                                        ],
+                                        onChanged:(String stockOrderVolumeController){
+                                        },
+                                      ),
+                                      const SizedBox(height:8),
+                                      Container(
+                                        height: 20,
+                                        alignment: Alignment.center,
+                                        child: const Text('Deposit atleast GHS50.00 to start trading',
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                        
+                                        ),
+                                        ),//remember to add condition to remove ifthe user has already done this
+                                      ),
+                                      //const SizedBox(height:8),
+                                      Center(
+                                        heightFactor: 3.5,
+                                        child: 
+                                        Text('GHS ${double.parse(((currentStockPrice*int.parse(stockOrderVolumeController.text)).toStringAsFixed(2)))} of $currentStockName Stocks',
+                                        style: const TextStyle(
+                                          fontSize: 25,),
+                                         )
+                                        ),
+                                      //const SizedBox(height:8),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            padding:const EdgeInsets.symmetric(horizontal: 4,),
+                                            alignment: Alignment.center,
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                minimumSize: const Size(150, 100),
+                                                maximumSize: const Size(150, 100),
+                                              ),
+                                              onPressed: ()=>Navigator.pop(context), 
+                                              child:const Text('Buy',
+                                              textScaleFactor: 2.0,
+                                              ),
+                                              ),
+                                          ),
+          
+                                          Container(
+                                            padding:const EdgeInsets.symmetric(horizontal: 4,),
+                                            alignment: Alignment.center,
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                minimumSize: const Size(150, 100),
+                                                maximumSize: const Size(150, 100),
+                                                primary: Colors.red,),
+                                              onPressed: ()=>Navigator.pop(context), 
+                                              child:const Text('Sell',
+                                              textScaleFactor: 2.0,
+                                              ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                livestockdata[index].price!.toString(),
+                                style: const TextStyle(
+                                color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),                
                     ),
-
-                  );
-                 },
-                 ),
-       
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
-          child: GNav(
-            activeColor: Colors.black,
-            iconSize:30 ,
-            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
-            selectedIndex: _selectedIndex,
-            tabs: _bottomNavigationBarItemItems(),
-            onTabChange: _onItemTapped
+                  );}
           ),
-        ),
-      )
+       
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Colors.white,
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.verified_user_rounded),
+                label: 'User',
+              ),
+            ],
+            currentIndex: _selectedIndex, 
+            onTap: _onItemTapped,      
+      ),
     );
   }
+}
 
-  List<GButton> _bottomNavigationBarItemItems() {
-    return [
-      const GButton(
-        icon: FontAwesomeIcons.home,
-        iconColor: Colors.grey,
-        text: 'Home',
-      ),
-      const GButton(
-        icon: FontAwesomeIcons.search,
-        iconColor: Colors.grey,
-        text: 'Search',
-      ),
-    ];
-  }
-  }
+
+
+
