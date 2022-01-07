@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthenticationService {
@@ -39,5 +40,38 @@ class AuthenticationService {
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
+  }
+}
+
+
+
+
+
+
+Future<String> addCoin(String currentStockName, String volume,String currentStockPrice) async {
+  try {
+    double volume_0 = double.parse(volume);
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    DocumentReference documentReference = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .collection('Portfolio')
+        .doc(currentStockName);
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot snapshot = await transaction.get(documentReference);
+      if (!snapshot.exists) {
+        documentReference.set({
+          "Volume": volume_0.toString(),
+          "Price": currentStockPrice
+          });
+        return 'added';
+      }
+      double newVolume = snapshot["Volume"] + volume_0;
+      transaction.update(documentReference, {"Volume": newVolume.toString()});
+      return 'updated';
+    });
+    return 'succesful!';
+  } catch (e) {
+    return 'failed!';
   }
 }
