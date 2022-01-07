@@ -12,11 +12,7 @@ class LoadingPage extends StatefulWidget {
 }
 
 class _LoadingPageState extends State<LoadingPage> {
-  @override
-  void initState() {
-    super.initState();
-  
-  }
+
 
   @override
   Widget build(BuildContext context) {
