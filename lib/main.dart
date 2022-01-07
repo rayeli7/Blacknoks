@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'pages/loading_page.dart';
 import 'pages/login_page.dart';
 
 
@@ -31,6 +32,10 @@ class MyApp extends StatelessWidget {
         )
       ],
     child:MaterialApp(
+      routes: {
+        'loading': (_) => const LoadingPage(),
+        '/home': (context) => const Homepage(),
+      },
       // Application name
       title: 'Blacknoks',
       // Application theme data, you can set the colors for the application as
