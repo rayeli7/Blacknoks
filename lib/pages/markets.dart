@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:blacknoks/api(s)/fetch_api.dart';
+import 'package:blacknoks/backend_serv/auth_service.dart';
 import 'package:blacknoks/pages/loading_page.dart';
 
 import 'package:flutter/material.dart';
@@ -75,7 +76,7 @@ class _GSEMarketsPageState extends State<GSEMarketsPage> {
                     double? currentStockPrice = livestockdata[index].price!;
                     String? currentStockName = livestockdata[index].name!;
                     return Card(
-                      elevation: 2,
+                      elevation: 5,
                       child: ListTile(
                         textColor: Colors.black,
                         enableFeedback: true,
@@ -158,7 +159,11 @@ class _GSEMarketsPageState extends State<GSEMarketsPage> {
                                                     minimumSize: const Size(150, 100),
                                                     maximumSize: const Size(150, 100),
                                                   ),
-                                                  onPressed: ()=>Navigator.pop(context), 
+                                                  onPressed: () async{
+                                                   await  addCoin(currentStockName, stockOrderVolumeController.text, currentStockPrice.toString());
+                                                   Navigator.pop(context);
+                                                  },
+                                                  
                                                   child:const Text('Buy',
                                                   textScaleFactor: 2.0,
                                                   ),

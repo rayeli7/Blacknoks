@@ -46,7 +46,7 @@ class _HomeState extends State<Homepage> {
       drawer: Container(
       height: MediaQuery.of(context).size.height,
         ),
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.white,
       body: _pages[_selectedIndex],       
       bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.white,
