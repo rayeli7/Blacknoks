@@ -160,7 +160,7 @@ class _GSEMarketsPageState extends State<GSEMarketsPage> {
                                                     maximumSize: const Size(150, 100),
                                                   ),
                                                   onPressed: () async{
-                                                   await  addCoin(currentStockName, stockOrderVolumeController.text, currentStockPrice.toString());
+                                                   await  addCoin(currentStockName, stockOrderVolumeController.text, currentStockPrice);
                                                    Navigator.pop(context);
                                                   },
                                                   
