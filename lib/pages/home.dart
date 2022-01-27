@@ -31,7 +31,11 @@ class _HomeState extends State<Homepage> {
       appBar:AppBar(
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        title: const Text('Home'),
+        title: const Center(
+          child: Image(
+          image: AssetImage("assets/images/Vector.png")
+          ),
+        ),
                 actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.add_alert),

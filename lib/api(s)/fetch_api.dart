@@ -2,11 +2,41 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 
 const baseUrl = "https://dev.kwayisi.org/apis/gse/live";
+const baseInfoUrl ="https://dev.kwayisi.org/apis/gse/equities/";
 
 class API {
   static Future getLiveStockData() {
-    var url = baseUrl; //+ "/stockname";
+    var url = baseUrl;
     return http.get(Uri.parse(url));
+  }
+  static Future getStockInfo(String symbol){
+    var url = baseInfoUrl+symbol;
+    return http.get(Uri.parse(url));
+  }
+}
+
+class CompanyInfo {
+  double? capital;
+  List? company;
+  double? dps;
+  double? eps;
+  String? name;
+  double? price;
+  int? shares;
+
+  CompanyInfo(this.capital, this.name, this.price, this.shares, this.company, this.dps, this.eps);
+ 
+  CompanyInfo.fromJson(Map json)
+      : capital = json['capital'],
+        name = json['name'],
+        price = json['price'],
+        shares = json['shares'],
+        company = json['company'],
+        dps = json['shares'],
+        eps = json['price'];
+
+  Map toJson() {
+    return {'capital': capital, 'name': name, 'price': price, 'shares': shares, 'company':company, 'dps': dps, 'eps': eps};
   }
 }
 
@@ -16,12 +46,7 @@ class LiveStockData {
   double? price;
   int? volume;
 
-
-
   LiveStockData(this.change, this.name, this.price, this.volume);
-
-  
-
  
   LiveStockData.fromJson(Map json)
       : change = json['change'],
