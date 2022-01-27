@@ -37,7 +37,7 @@ class _GSEMarketsPageState extends State<GSEMarketsPage> {
   initState() {
     super.initState();
     _isLoading = true;
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 0), () {
       setState(() async{
         await _getLiveStockData().then(
         _isLoading = false);
