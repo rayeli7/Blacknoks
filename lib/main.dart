@@ -1,6 +1,7 @@
 import 'package:blacknoks/pages/home.dart';
+import 'package:blacknoks/pages/splashscreen.dart';
 import 'package:flutter/material.dart';
-import 'package:blacknoks/backend_serv/auth_service.dart';
+import 'package:blacknoks/services/auth_service.dart';
 
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // A widget which will be started on application startup
-      home: const AuthenticationWrapper(),
+      home: const SplashScreen(),
     ),
     );
   }

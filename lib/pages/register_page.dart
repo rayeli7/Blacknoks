@@ -4,7 +4,7 @@ import '../models/theme.dart';
 
 
 
-import '../backend_serv/auth_service.dart';
+import '../services/auth_service.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 

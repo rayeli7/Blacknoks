@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:blacknoks/api(s)/fetch_api.dart';
-import 'package:blacknoks/backend_serv/auth_service.dart';
+import 'package:blacknoks/services/auth_service.dart';
 import 'package:blacknoks/pages/loading_page.dart';
 
 import 'package:flutter/material.dart';
@@ -35,22 +35,17 @@ class _GSEMarketsPageState extends State<GSEMarketsPage> {
 
   @override
   initState() {
-    _isLoading = true;
-    Future.delayed(const Duration(seconds: 4), () {
-      setState(() {
-        _isLoading = false;
-      });
-    });
     super.initState();
-    _getLiveStockData();
-
-    
+    _isLoading = true;
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() async{
+        await _getLiveStockData().then(
+        _isLoading = false);
+      });
+    });     
   }
 
-  @override
-  dispose() {
-    super.dispose();
-  }
+
   @override
   Widget build(BuildContext context) {
     return Column(

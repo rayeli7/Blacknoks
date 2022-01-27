@@ -5,7 +5,7 @@ import 'package:blacknoks/models/theme.dart';
 import 'package:blacknoks/widgets/custom_checkbox.dart';
 
 
-import 'package:blacknoks/backend_serv/auth_service.dart';
+import 'package:blacknoks/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
