@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:blacknoks/api(s)/fetch_api.dart';
+import 'package:blacknoks/models/livestockdata_model.dart';
 import 'package:blacknoks/pages/company_info_page.dart';
 import 'package:blacknoks/services/auth_service.dart';
 import 'package:blacknoks/pages/loading_page.dart';
@@ -40,8 +41,8 @@ class _GSEMarketsPageState extends State<GSEMarketsPage> {
     super.initState();
     _isLoading = true;
     Future.delayed(const Duration(seconds: 0), () {
-      setState(() async{
-        await _getLiveStockData().then(
+      setState((){
+        _getLiveStockData().then(
         _isLoading = false);
       });
     });     
@@ -74,7 +75,7 @@ class _GSEMarketsPageState extends State<GSEMarketsPage> {
                     String? currentStockName = livestockdata[index].name!;
                     return 
                        OpenContainer(
-                         transitionDuration: const Duration(milliseconds: 950),
+                         transitionDuration: const Duration(seconds: 1),
                          closedBuilder: (BuildContext context, void Function() action)=>Card(
                          elevation: 5,
                          child: ListTile(
@@ -204,7 +205,7 @@ class _GSEMarketsPageState extends State<GSEMarketsPage> {
                              ),                
                            ),
                          ),
-                         openBuilder: (BuildContext context, void Function({Object? returnValue}) action)=>const CompanyInfoPage(),
+                         openBuilder: (context, action)=> CompanyInfoPage(stockName: currentStockName,),
                        );
                     }
               ),

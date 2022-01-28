@@ -31,9 +31,11 @@ class _HomeState extends State<Homepage> {
       appBar:AppBar(
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        title: const Center(
-          child: Image(
-          image: AssetImage("assets/images/Vector.png")
+        title: const SizedBox(
+          child:Image(
+          height: 55,
+          image: AssetImage("assets/images/Vector.png"),
+          fit: BoxFit.contain,
           ),
         ),
                 actions: <Widget>[
@@ -47,9 +49,6 @@ class _HomeState extends State<Homepage> {
           ),
                 ]
       ), 
-      drawer: Container(
-      height: MediaQuery.of(context).size.height,
-        ),
       backgroundColor: Colors.white,
       body: _pages[_selectedIndex],       
       bottomNavigationBar: BottomNavigationBar(
