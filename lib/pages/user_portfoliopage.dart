@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class UserPortfolioPage extends StatefulWidget {
   const UserPortfolioPage({Key? key}) : super(key: key);
@@ -10,44 +11,68 @@ class UserPortfolioPage extends StatefulWidget {
 }
 
 class _UserPortfolioPageState extends State<UserPortfolioPage> {
+  
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
+
           Row(
-                            children: const [
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text("Stock"),
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children:  <Widget>[
+              SizedBox(
+                 width: MediaQuery.of(context).size.width/7.5,
+                 child:
+                 const Padding(
+                   padding: EdgeInsets.all(8.0),
+                    child: Text("Stock"),
+                    ),
+                    ),
+              SizedBox(
+                            width: MediaQuery.of(context).size.width/5,
+                            child:
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                    "Amount"
+                                    ),
+                              ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                                "Amount"
-                                ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                                "Price"
-                                ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width/5,
+                            child:
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                    "Price"
+                                    ),
+                              ),
                           ), 
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                                "Bought"
-                                ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width/5,
+                            child:
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                    "Bought"
+                                    ),
+                              ),
                           ),  
                           
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                                "Gain: \nprofit/loss"
-                                ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width/5,
+                            child:
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                    "Gain"
+                                    ),
+                              ),
                           ), 
                             ],
                           ),
+                          
           Container(
             decoration: const BoxDecoration(
                 color: Colors.white,
@@ -75,38 +100,64 @@ class _UserPortfolioPageState extends State<UserPortfolioPage> {
                           double cost = document['Cost'];
                           double volume = document['Volume'];
                           String stockTicker = document.id;
-                          return Row(
-                            children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(stockTicker),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                                "$volume"
+                          return Card(
+                            margin: const EdgeInsets.all(5),
+                            elevation: 3,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width/8,
+                              child:
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(stockTicker),
                                 ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                                price.toStringAsFixed(2)
+                            
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width/5,
+                              child:
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                      "$volume"
+                                      ),
                                 ),
-                          ), 
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                                cost.toStringAsFixed(2)
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width/5,
+                              child:
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                      price.toStringAsFixed(2)
+                                      ),
                                 ),
-                          ),  
-                          /*
-                          const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                                "Gain: \nprofit/loss"
+                            ), 
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width/5,
+                              child:
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                      cost.toStringAsFixed(2)
+                                      ),
                                 ),
-                          ), */
-                            ],
+                            ), 
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width/5.9,
+                              child:
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                      cost.toStringAsFixed(0)
+                                      ),
+                                ),
+                              
+                            ), 
+                              ],
+                            ),
                           );
                         }).toList(),
                       );
@@ -117,4 +168,11 @@ class _UserPortfolioPageState extends State<UserPortfolioPage> {
       ),
     );
   }
+}
+
+class _ChartData {
+  _ChartData(this.x, this.y);
+ 
+  final String x;
+  final double y;
 }
