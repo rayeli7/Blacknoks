@@ -38,7 +38,7 @@ class _HomeState extends State<Homepage> {
           fit: BoxFit.contain,
           ),
         ),
-                actions: <Widget>[
+        actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.add_alert),
             tooltip: 'Show Snackbar',
@@ -55,8 +55,8 @@ class _HomeState extends State<Homepage> {
           backgroundColor: Colors.white,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
+              icon: Icon(Icons.kayaking),
+              label: 'Stocks',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.verified_user_rounded),

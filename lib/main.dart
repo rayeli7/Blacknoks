@@ -1,4 +1,3 @@
-import 'package:blacknoks/pages/home.dart';
 import 'package:blacknoks/pages/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:blacknoks/services/auth_service.dart';
@@ -7,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'pages/home.dart';
 import 'pages/loading_page.dart';
 import 'pages/login_page.dart';
 
@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
         )
       ],
     child:MaterialApp(
+      debugShowCheckedModeBanner: false,
       routes: {
         'loading': (_) => const LoadingPage(),
         '/home': (context) => const Homepage(),
