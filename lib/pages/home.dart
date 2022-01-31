@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:blacknoks/api(s)/fetch_api.dart';
+import 'package:blacknoks/models/livestockdata_model.dart';
 import 'package:blacknoks/pages/markets.dart';
 import 'package:blacknoks/pages/user_portfoliopage.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +14,30 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomeState extends State<Homepage> {
-    int _selectedIndex = 0; 
+    List<LiveStockData> livestockdata = <LiveStockData>[];
+    int _selectedIndex = 0;
+   late bool _isLoading;
+
+  _getLiveStockData() {
+    API.getLiveStockData().then((response) {
+      setState(() {
+        Iterable list = json.decode(response.body);
+        livestockdata = list.map((model) => LiveStockData.fromJson(model)).toList();
+      });
+    });
+  }
+
+  @override
+  initState() {
+    super.initState();
+    _isLoading = true;
+    Future.delayed(const Duration(seconds: 0), () {
+      setState((){
+        _getLiveStockData()(
+        _isLoading = false);
+      });
+    }); 
+  }
 
   void _onItemTapped(int index) {
               setState(() {
@@ -18,15 +45,21 @@ class _HomeState extends State<Homepage> {
               });
             }
 
-  final _pages = [
-    const GSEMarketsPage(),
-    const UserPortfolioPage(),
-  ];
+  
           
   
   
   @override
   Widget build(BuildContext context) {
+    final _pages = [
+  GSEMarketsPage(
+    livestockdata: livestockdata,
+    isLoading: _isLoading,  
+                          ),
+  UserPortfolioPage(
+    livestockdata: livestockdata
+    ),
+  ];
     return Scaffold(
       appBar:AppBar(
         backgroundColor: Colors.white,

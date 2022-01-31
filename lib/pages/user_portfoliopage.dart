@@ -1,178 +1,152 @@
+
+import 'package:animations/animations.dart';
+import 'package:blacknoks/models/livestockdata_model.dart';
+import 'package:blacknoks/models/piechart_chartdata_model.dart';
+import 'package:blacknoks/widgets/buy_modal_bottom_sheet.dart';
+import 'package:blacknoks/widgets/portfoliolist_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class UserPortfolioPage extends StatefulWidget {
-  const UserPortfolioPage({Key? key}) : super(key: key);
+  final List<LiveStockData> livestockdata;
+
+  const UserPortfolioPage({Key? key, required this.livestockdata}) : super(key: key);
 
   @override
   _UserPortfolioPageState createState() => _UserPortfolioPageState();
 }
 
 class _UserPortfolioPageState extends State<UserPortfolioPage> {
+  var stockOrderVolumeController = TextEditingController(text: '100');
+
   
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children:  <Widget>[
-              SizedBox(
-                 width: MediaQuery.of(context).size.width/7.5,
-                 child:
-                 const Padding(
-                   padding: EdgeInsets.all(8.0),
-                    child: Text("Stock"),
-                    ),
-                    ),
-              SizedBox(
-                            width: MediaQuery.of(context).size.width/5,
-                            child:
-                              const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                    "Amount"
-                                    ),
-                              ),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width/5,
-                            child:
-                              const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                    "Price"
-                                    ),
-                              ),
-                          ), 
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width/5,
-                            child:
-                              const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                    "Bought"
-                                    ),
-                              ),
-                          ),  
-                          
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width/5,
-                            child:
-                              const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                    "Gain"
-                                    ),
-                              ),
-                          ), 
-                            ],
-                          ),
-                          
-          Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: Center(
-                child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('Users')
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .collection('Portfolio')
-                        .snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (!snapshot.hasData) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-    
-                      return ListView(
-                        children: snapshot.data!.docs.map((document) {
-                          double price = document['Price'];
-                          double cost = document['Cost'];
-                          double volume = document['Volume'];
-                          String stockTicker = document.id;
-                          return Card(
-                            margin: const EdgeInsets.all(5),
-                            elevation: 3,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width/8,
-                              child:
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(stockTicker),
-                                ),
-                            
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width/5,
-                              child:
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                      "$volume"
-                                      ),
-                                ),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width/5,
-                              child:
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                      price.toStringAsFixed(2)
-                                      ),
-                                ),
-                            ), 
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width/5,
-                              child:
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                      cost.toStringAsFixed(2)
-                                      ),
-                                ),
-                            ), 
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width/5.9,
-                              child:
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                      cost.toStringAsFixed(0)
-                                      ),
-                                ),
-                              
-                            ), 
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                      );
-                    }),
-              ),
-          ),
-        ],
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
       ),
-    );
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('Users')
+                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                      .collection('Portfolio')
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+    
+                    List<ChartData> chartdataList = (snapshot.data!.docs.map((document) {
+                    return ChartData(document.id,document['Cost']);
+                              }).toList());
+                    return Column(
+                      children: <Widget>[
+                        SfCircularChart(
+                          //title: ChartTitle(
+                            //  text: 'Your Portfolio:',
+                              // Aligns the chart title to left
+                              //alignment: ChartAlignment.near,
+                              //textStyle: const TextStyle(
+                              //  fontSize: 14,
+                             // )
+                            //),
+                          tooltipBehavior:TooltipBehavior (enable:true),
+                          legend: Legend(
+                            //title: LegendTitle(
+                              //text:'Assets',
+                              //textStyle: const TextStyle(
+                               // fontSize: 20,
+                             // )),
+                            position:LegendPosition.bottom ,
+                            iconWidth: 40,
+                            iconHeight: 20,
+                            isVisible: true),
+                          series: <CircularSeries>[
+                          DoughnutSeries<ChartData, String>(
+                            dataSource: chartdataList,
+                            enableTooltip: true,
+                            xValueMapper: (ChartData data, _) => data.x,
+                            yValueMapper: (ChartData data, _) => data.y,
+                            dataLabelSettings: const DataLabelSettings(
+                                    isVisible: true, 
+                                    labelPosition: ChartDataLabelPosition.outside,
+                                    useSeriesColor: true
+                                ),
+                            explode: true,
+                            explodeIndex: 0,
+                            explodeGesture: ActivationMode.singleTap
+                    
+                          )
+                                    ]),
+                      Container(
+                        color: Colors.amber,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children:  <Widget>[
+                            SizedBox(
+                               width: MediaQuery.of(context).size.width/7.5,
+                               child:
+                               const Padding(
+                                 padding: EdgeInsets.all(8.0),
+                                  child: Text("Stock"),
+                                  ),
+                                  ),
+                            SizedBox(
+                                        width: MediaQuery.of(context).size.width/5,
+                                        child: const Padding(
+                                            padding: EdgeInsets.fromLTRB( 2.0, 8.0, 2.0, 8.0),
+                                            child: Text(
+                                                "Current Price"
+                                                ),
+                                          ),
+                                      ),
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width/5,
+                                        child:
+                                          const Padding(
+                                            padding: EdgeInsets.fromLTRB( 2.0, 8.0, 2.0, 8.0),
+                                            child: Text(
+                                                "Purchase Price"
+                                                ),
+                                          ),
+                                      ),
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width/5,
+                                        child:
+                                          const Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Text(
+                                                "Quantity"
+                                                ),
+                                          ),
+                                      ),
+                    
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width/5,
+                                        child:
+                                          const Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Text(
+                                                "Gain"
+                                                ),
+                                          ),
+                                      ),
+                                      ],
+                                   ),
+                                 ),
+                        Flexible(
+                          child: PortfolioListWidget(snapshot: snapshot,liveStockData: widget.livestockdata )
+                          ),
+                        ]);
+                      })
+    );}
   }
-}
 
-class _ChartData {
-  _ChartData(this.x, this.y);
- 
-  final String x;
-  final double y;
-}
