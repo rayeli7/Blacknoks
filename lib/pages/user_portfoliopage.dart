@@ -95,24 +95,21 @@ class _UserPortfolioPageState extends State<UserPortfolioPage> {
                                width: MediaQuery.of(context).size.width/7.5,
                                child:
                                const Padding(
-                                 padding: EdgeInsets.all(8.0),
-                                  child: Text("Stock"),
-                                  ),
+                                 padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                                 child: Text("Stock"),
+                               ),
                                   ),
                             SizedBox(
-                                        width: MediaQuery.of(context).size.width/5,
-                                        child: const Padding(
-                                            padding: EdgeInsets.fromLTRB( 2.0, 8.0, 2.0, 8.0),
-                                            child: Text(
-                                                "Current Price"
-                                                ),
-                                          ),
+                                        width: MediaQuery.of(context).size.width/6,
+                                        child: const Text(
+                                            "Current Price"
+                                            ),
                                       ),
                                       SizedBox(
-                                        width: MediaQuery.of(context).size.width/5,
+                                        width: MediaQuery.of(context).size.width/6,
                                         child:
                                           const Padding(
-                                            padding: EdgeInsets.fromLTRB( 2.0, 8.0, 2.0, 8.0),
+                                            padding: EdgeInsets.fromLTRB( 0.0, 8.0, 2.0, 8.0),
                                             child: Text(
                                                 "Purchase Price"
                                                 ),
@@ -121,19 +118,15 @@ class _UserPortfolioPageState extends State<UserPortfolioPage> {
                                       SizedBox(
                                         width: MediaQuery.of(context).size.width/5,
                                         child:
-                                          const Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Text(
-                                                "Quantity"
-                                                ),
-                                          ),
+                                          const Text(
+                                              "Quantity"
+                                              ),
                                       ),
                     
                                       SizedBox(
-                                        width: MediaQuery.of(context).size.width/5,
+                                        width: MediaQuery.of(context).size.width/4,
                                         child:
-                                          const Padding(
-                                            padding: EdgeInsets.all(8.0),
+                                          const Center(
                                             child: Text(
                                                 "Gain"
                                                 ),

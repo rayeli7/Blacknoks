@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
@@ -44,7 +45,7 @@ class AuthenticationService {
 }
 
 
-Future<bool> addCoin(String currentStockName,String volume, currentStockPrice) async {
+Future<bool> buyAsset(String currentStockName,String volume, currentStockPrice) async {
   try {
     String uid = FirebaseAuth.instance.currentUser!.uid;
     double value = double.tryParse(volume.toString()) ?? 0;
@@ -76,6 +77,39 @@ Future<bool> addCoin(String currentStockName,String volume, currentStockPrice) a
     });
     return true;
   } catch (e) {
+    return false;
+  }
+}
+
+Future<bool> sellAsset(String currentStockName,String volume, currentStockPrice) async {
+  try{
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  double value = double.tryParse(volume.toString()) ?? 0;
+  double cost = value*currentStockPrice;
+  DocumentReference documentReference = FirebaseFirestore.instance
+      .collection('Users')
+      .doc(uid)
+      .collection('Portfolio')
+      .doc(currentStockName);
+      FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot snapshot = await transaction.get(documentReference);
+      var newVolume = snapshot['Volume'] - value;
+      var newCost = snapshot['Cost']-cost;
+      var newPrice =  newCost/newVolume;
+      if (newVolume == 0){
+        documentReference.delete();
+        return Text('You have sold all Assets in $currentStockName');
+      } else if (newVolume <= 0){
+        return false;
+      }
+      transaction.update(documentReference, {
+        'Volume': newVolume,
+        'Price': newPrice,
+        'Cost': newCost
+        });
+      });     
+  return true;
+  } catch(e){
     return false;
   }
 }

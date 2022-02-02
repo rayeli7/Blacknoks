@@ -44,13 +44,25 @@ class _GSEMarketsPageState extends State<GSEMarketsPage> {
                   height: 50,
                   padding: const EdgeInsets.all(5),
                   color: Colors.amber,
-                  child: const ListTile(
-                    title: Text('Symbol'),
+                  child: ListTile(
+                    title: const Text('Symbol'),
                     trailing: SizedBox(
                       width: 90,
-                      child: Text(
-                        'Price/GHS'
-                        ),
+                      child: RichText(
+                        text: const TextSpan(
+                         style: TextStyle(
+                          fontSize:14.0,
+                          color: Colors.black
+                         ),
+                         children: <TextSpan>[
+                           TextSpan(text:'Price/GH'),
+                           TextSpan(text: '₵',
+                           style:TextStyle(
+                             fontSize:15 
+                             ))
+                         ]
+                          ),
+                      ),
                     ),
                   ),
                 );}

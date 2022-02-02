@@ -48,18 +48,28 @@ class ModalBottomSheet extends StatelessWidget {
              alignment: Alignment.center,
              child: const Text('Deposit at least GHS50.00 to start trading',
              style: TextStyle(
-               color: Colors.grey,
+               color: Colors.redAccent,
              ),
              ),//remember to add condition to remove ifthe user has already done this
            ),
            Center(
              heightFactor: 3.5,
-             child: 
-             Text('GHS ${double.parse(((currentStockPrice!*int.parse(stockOrderVolumeController.text)).toStringAsFixed(2)))} of $currentStockName Stocks',
-             style: const TextStyle(
-               fontSize: 25,),
-              )
-             ),
+             child: RichText(
+                            text:  TextSpan(
+                             style: const TextStyle(
+                              fontSize:25.0,
+                              color: Colors.black
+                             ),
+                             children: <TextSpan>[
+                               const TextSpan(text:'GH'),
+                               const TextSpan(text: '₵ ',
+                               style: TextStyle(
+                                 fontSize:27 
+                                 )),
+                               TextSpan(text: '${double.parse(((currentStockPrice!*int.parse(stockOrderVolumeController.text)).toStringAsFixed(2)))} of $currentStockName Stocks')
+                             ]
+                              ),
+                          ),),
            Row(
              mainAxisAlignment: MainAxisAlignment.center,
              children: [
@@ -72,7 +82,7 @@ class ModalBottomSheet extends StatelessWidget {
                      maximumSize: const Size(150, 100),
                    ),
                    onPressed: () async{
-                    await  addCoin(currentStockName!, stockOrderVolumeController.text, currentStockPrice);
+                    await  buyAsset(currentStockName!, stockOrderVolumeController.text, currentStockPrice);
                     Navigator.pop(context);
                    },
                    
@@ -90,7 +100,10 @@ class ModalBottomSheet extends StatelessWidget {
                      minimumSize: const Size(150, 100),
                      maximumSize: const Size(150, 100),
                      primary: Colors.red,),
-                   onPressed: ()=>Navigator.pop(context), 
+                   onPressed: () async{
+                    await  sellAsset(currentStockName!, stockOrderVolumeController.text, currentStockPrice);
+                    Navigator.pop(context);
+                   }, 
                    child:const Text('Sell',
                    textScaleFactor: 2.0,
                    ),

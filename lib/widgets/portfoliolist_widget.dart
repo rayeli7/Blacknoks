@@ -19,9 +19,11 @@ class PortfolioListWidget extends StatefulWidget {
 
 class _PortfolioListWidgetState extends State<PortfolioListWidget> {
   var stockOrderVolumeController =  TextEditingController(text: '100');
+  
 
   @override
   Widget build(BuildContext context) {
+    
     var snapshots = widget.snapshot;
     return ListView(
       scrollDirection: Axis.vertical,
@@ -32,11 +34,13 @@ class _PortfolioListWidgetState extends State<PortfolioListWidget> {
         double cost = document['Cost'];
         double volume = document['Volume'];
         String stockTicker = document.id;
+        var livestockdata = (widget.liveStockData).where((element) => element.name ==stockTicker );
+        final double? currentStockPrice =livestockdata.elementAt(0).price;
         return OpenContainer(transitionDuration: const Duration(seconds: 1),
-                                               closedBuilder: (context, action)=>_Card(stockTicker: stockTicker, cost: cost, price: price, volume: volume),
-                                               openBuilder: (context, action)=> ModalBottomSheet(
+                closedBuilder: (context, action)=>_Card(stockTicker: stockTicker, currentStockPrice: currentStockPrice, price: price, volume: volume),
+                openBuilder: (context, action)=> ModalBottomSheet(
               stockOrderVolumeController: stockOrderVolumeController,
-              currentStockPrice: 5, 
+              currentStockPrice: currentStockPrice, 
               currentStockName: stockTicker,
               ),
               );
@@ -49,71 +53,81 @@ class _Card extends StatelessWidget {
   const _Card({
     Key? key,
     required this.stockTicker,
-    required this.cost,
     required this.price,
-    required this.volume,
+    required this.volume, 
+    required this.currentStockPrice,
   }) : super(key: key);
 
   final String stockTicker;
-  final double cost;
+  final double? currentStockPrice;
   final double price;
   final double volume;
 
+  
+
   @override
   Widget build(BuildContext context) {
+
+    double gain = (currentStockPrice! - price)*volume ;
     return Card(
-      margin: const EdgeInsets.all(5),
+      margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
       elevation: 3,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
       SizedBox(
-        width: MediaQuery.of(context).size.width/8,
+        height: MediaQuery.of(context).size.height/14,
+        width: MediaQuery.of(context).size.width/7.5,
         child:
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          Center(
             child: Text(stockTicker),
           ),
       
       ),
       SizedBox(
-        width: MediaQuery.of(context).size.width/5,
+        width: MediaQuery.of(context).size.width/6,
         child:
-          Padding(
-            padding: const EdgeInsets.fromLTRB( 2.0, 8.0, 2.0, 8.0),
-            child: Text(
-                cost.toStringAsFixed(2)
-                ),
-          ),
+          Text(
+              currentStockPrice!.toStringAsFixed(2) //Current Price
+              ),
       ),
       SizedBox(
-        width: MediaQuery.of(context).size.width/5,
+        width: MediaQuery.of(context).size.width/6,
         child:
-          Padding(
-            padding: const EdgeInsets.fromLTRB( 2.0, 8.0, 2.0, 8.0),
-            child: Text(
-                price.toStringAsFixed(2)
-                ),
-          ),
+          Text(
+              price.toStringAsFixed(2) //Purchase Price
+              ),
       ), 
       SizedBox(
         width: MediaQuery.of(context).size.width/5,
         child:
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-                volume.toStringAsFixed(0)
-                ),
-          ),
+          Text(
+              volume.toStringAsFixed(0) //Quantity
+              ),
       ), 
       SizedBox(
-        width: MediaQuery.of(context).size.width/5.9,
+        width: MediaQuery.of(context).size.width/4,
         child:
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-                cost.toStringAsFixed(0)
-                ),
+            padding: const EdgeInsets.fromLTRB( 0.0, 8.0, 0.0, 8.0),
+            child: Center(
+              child: RichText(
+                            text:  TextSpan(
+                             style: const TextStyle(
+                              fontSize:18.0,
+                              color: Colors.black
+                             ),
+                             children: <TextSpan>[
+                               const TextSpan(text:'GH'),
+                               const TextSpan(text: '₵ ',
+                               style: TextStyle(
+                                 fontSize:15 
+                                 )),
+                               TextSpan(text: gain.toStringAsFixed(1))
+                             ]
+                              ),
+                          ),
+            ),
           ),
         
       ), 

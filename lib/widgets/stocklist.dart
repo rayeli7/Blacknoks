@@ -62,6 +62,18 @@ class StocklistWidget extends StatelessWidget {
               color: Colors.black),
               ),
             ),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                (Set<MaterialState> states) {
+                  if (livestockdata[index].change! > 0 ) {
+                    return Colors.green;
+                  } else if (livestockdata[index].change! < 0 ){
+                    return Colors.redAccent;
+                  }
+                  return null;
+                },
+              ),
+            ),
           ),
         ),                
       ),
