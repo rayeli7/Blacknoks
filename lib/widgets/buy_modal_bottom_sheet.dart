@@ -7,7 +7,7 @@ class ModalBottomSheet extends StatelessWidget {
     Key? key,
     required this.stockOrderVolumeController,
     required this.currentStockPrice,
-    required this.currentStockName,
+    required this.currentStockName, changeValue,
   }) : super(key: key);
 
   final TextEditingController stockOrderVolumeController;

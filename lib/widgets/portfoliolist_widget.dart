@@ -36,12 +36,14 @@ class _PortfolioListWidgetState extends State<PortfolioListWidget> {
         String stockTicker = document.id;
         var livestockdata = (widget.liveStockData).where((element) => element.name ==stockTicker );
         final double? currentStockPrice =livestockdata.elementAt(0).price;
+        var changeValue=livestockdata.elementAt(0).change;
         return OpenContainer(transitionDuration: const Duration(seconds: 1),
-                closedBuilder: (context, action)=>_Card(stockTicker: stockTicker, currentStockPrice: currentStockPrice, price: price, volume: volume),
+                closedBuilder: (context, action)=>_Card(stockTicker: stockTicker, currentStockPrice: currentStockPrice, price: price, volume: volume,changeValue: changeValue,),
                 openBuilder: (context, action)=> ModalBottomSheet(
               stockOrderVolumeController: stockOrderVolumeController,
               currentStockPrice: currentStockPrice, 
               currentStockName: stockTicker,
+              changeValue: changeValue,
               ),
               );
       }).toList(),
@@ -56,10 +58,12 @@ class _Card extends StatelessWidget {
     required this.price,
     required this.volume, 
     required this.currentStockPrice,
+    required this.changeValue,
   }) : super(key: key);
 
   final String stockTicker;
   final double? currentStockPrice;
+  final double? changeValue;
   final double price;
   final double volume;
 
@@ -69,6 +73,16 @@ class _Card extends StatelessWidget {
   Widget build(BuildContext context) {
 
     double gain = (currentStockPrice! - price)*volume ;
+    Color? gainColor(){
+        if (changeValue! < 0){
+          return Colors.red;
+        }else if (changeValue! > 0 ){
+          return Colors.greenAccent;
+        }
+        else {
+          return null;
+        }
+    };
     return Card(
       margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
       elevation: 3,
@@ -105,7 +119,8 @@ class _Card extends StatelessWidget {
               volume.toStringAsFixed(0) //Quantity
               ),
       ), 
-      SizedBox(
+      Container(
+        color: gainColor(),
         width: MediaQuery.of(context).size.width/4,
         child:
           Padding(
