@@ -70,7 +70,7 @@ class _Card extends StatelessWidget {
   
 
   @override
-  Widget build(BuildContext contexfluttt) {
+  Widget build(BuildContext context) {
 
     double gain = (currentStockPrice! - price)*volume ;
     Color? gainColor(){
