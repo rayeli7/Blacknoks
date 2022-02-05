@@ -11,7 +11,6 @@ class API {
   }
   static Future getStockInfo(String symbol){
     var url = baseInfoUrl+symbol;
-    print(url);
     return http.get(Uri.parse(url));
   }
 }

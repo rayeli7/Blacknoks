@@ -1,8 +1,6 @@
 
-import 'package:animations/animations.dart';
 import 'package:blacknoks/models/livestockdata_model.dart';
 import 'package:blacknoks/models/piechart_chartdata_model.dart';
-import 'package:blacknoks/widgets/buy_modal_bottom_sheet.dart';
 import 'package:blacknoks/widgets/portfoliolist_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

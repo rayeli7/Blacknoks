@@ -82,7 +82,7 @@ class _Card extends StatelessWidget {
         else {
           return null;
         }
-    };
+    }
     return Card(
       margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
       elevation: 3,

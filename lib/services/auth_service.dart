@@ -1,6 +1,26 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:another_flushbar/flushbar.dart';
+
+void showIconFlushbar(BuildContext context) {
+  Flushbar(
+    icon: const Icon(
+      Icons.email_outlined,
+      color: Colors.white,
+      size: 30,
+    ),
+    backgroundColor: const Color(0xFF0277BD),
+    duration: const Duration(seconds: 4),
+    message: "This email is already registered.",
+    messageSize: 18,
+    titleText: const Text("Flushbar with Icon.",
+        style: TextStyle(
+            fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+  ).show(context);
+}
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
@@ -23,7 +43,8 @@ class AuthenticationService {
   /// error messages. That way you can throw, return or whatever you prefer with that instead.
   Future<String?> signIn({String? email, String? password}) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email!.trim(), password: password!.trim());
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email!.trim(), password: password!.trim());
       return "Signed in";
     } on FirebaseAuthException catch (e) {
       return e.message;
@@ -34,9 +55,10 @@ class AuthenticationService {
   /// This is to make it as easy as possible but a better way would be to
   /// use your own custom class that would take the exception and return better
   /// error messages. That way you can throw, return or whatever you prefer with that instead.
-  Future<String?> signUp({String? email, String?  password}) async {
+  Future<String?> signUp({String? email, String? password}) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email!.trim(), password: password!.trim());
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email!.trim(), password: password!.trim());
       return "Signed up";
     } on FirebaseAuthException catch (e) {
       return e.message;
@@ -44,72 +66,37 @@ class AuthenticationService {
   }
 }
 
-
-Future<bool> buyAsset(String currentStockName,String volume, currentStockPrice) async {
+Future sellAsset(
+    String currentStockName, String volume, currentStockPrice) async {
   try {
     String uid = FirebaseAuth.instance.currentUser!.uid;
     double value = double.tryParse(volume.toString()) ?? 0;
-    double cost = value*currentStockPrice;
+    double cost = value * currentStockPrice;
+    String response;
     DocumentReference documentReference = FirebaseFirestore.instance
         .collection('Users')
         .doc(uid)
         .collection('Portfolio')
         .doc(currentStockName);
-    FirebaseFirestore.instance.runTransaction((transaction) async {
-      DocumentSnapshot snapshot = await transaction.get(documentReference);
-      if (!snapshot.exists) {
-        documentReference.set({
-          'Volume': value,
-          'Price': currentStockPrice,
-          'Cost': cost
-          });
-        return true;
-      }
-      var newVolume = snapshot['Volume'] + value;
-      var newCost = snapshot['Cost']+cost;
-      var newPrice =  newCost/newVolume;
-      transaction.update(documentReference, {
-        'Volume': newVolume,
-        'Price': newPrice,
-        'Cost': newCost
-        });
-      return true;
-    });
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-Future<bool> sellAsset(String currentStockName,String volume, currentStockPrice) async {
-  try{
-  String uid = FirebaseAuth.instance.currentUser!.uid;
-  double value = double.tryParse(volume.toString()) ?? 0;
-  double cost = value*currentStockPrice;
-  DocumentReference documentReference = FirebaseFirestore.instance
-      .collection('Users')
-      .doc(uid)
-      .collection('Portfolio')
-      .doc(currentStockName);
-      FirebaseFirestore.instance.runTransaction((transaction) async {
+    return FirebaseFirestore.instance.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(documentReference);
       var newVolume = snapshot['Volume'] - value;
-      var newCost = snapshot['Cost']-cost;
-      var newPrice =  newCost/newVolume;
-      if (newVolume == 0){
+      var newCost = snapshot['Cost'] - cost;
+      var newPrice = newCost / newVolume;
+      if (newVolume == 0) {
         documentReference.delete();
-        return Text('You have sold all Assets in $currentStockName');
-      } else if (newVolume <= 0){
-        return false;
+        response = ('You have sold all Assets in $currentStockName');
+        return (response);
+      } else if (newVolume <= 0) {
+        response = ("you don't have enough $currentStockName assets");
+        return (response);
       }
-      transaction.update(documentReference, {
-        'Volume': newVolume,
-        'Price': newPrice,
-        'Cost': newCost
-        });
-      });     
-  return true;
-  } catch(e){
-    return false;
+      transaction.update(documentReference,
+          {'Volume': newVolume, 'Price': newPrice, 'Cost': newCost});
+      response = ("Success");
+      return (response);
+    });
+  } catch (e) {
+    return 'failed';
   }
 }
