@@ -27,6 +27,7 @@ class _PortfolioListWidgetState extends State<PortfolioListWidget> {
       shrinkWrap: true,
       children: snapshots.data!.docs.map((document) {
         double price = document['Price'];
+        // ignore: unused_local_variable
         double cost = document['Cost'];
         double volume = document['Volume'];
         String stockTicker = document.id;
