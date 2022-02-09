@@ -5,7 +5,7 @@ class LiveStockData {
   int? volume;
 
   LiveStockData(this.change, this.name, this.price, this.volume);
- 
+
   LiveStockData.fromJson(Map json)
       : change = json['change'],
         name = json['name'],

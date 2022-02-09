@@ -1,8 +1,11 @@
-import 'package:another_flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart' show Flushbar;
 import 'package:blacknoks/services/auth_service.dart';
 import 'package:blacknoks/services/buy_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'buy_buttonWidget.dart';
+import 'sell_buttonWidget.dart';
 
 class ModalBottomSheet extends StatelessWidget {
   const ModalBottomSheet({
@@ -10,12 +13,14 @@ class ModalBottomSheet extends StatelessWidget {
     required this.stockOrderVolumeController,
     required this.currentStockPrice,
     required this.currentStockName,
+    required this.showSellButton,
     changeValue,
   }) : super(key: key);
 
   final TextEditingController stockOrderVolumeController;
   final double? currentStockPrice;
   final String? currentStockName;
+  final bool showSellButton;
 
   @override
   Widget build(BuildContext context) {
@@ -72,54 +77,16 @@ class ModalBottomSheet extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 4,
-                ),
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(150, 100),
-                    maximumSize: const Size(150, 100),
-                  ),
-                  onPressed: () async {
-                    await buyAsset(currentStockName!,
-                        stockOrderVolumeController.text, currentStockPrice);
-                    Navigator.pop(context);
-                  },
-                  child: const Text(
-                    'Buy',
-                    textScaleFactor: 2.0,
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 4,
-                ),
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(150, 100),
-                    maximumSize: const Size(150, 100),
-                    primary: Colors.red,
-                  ),
-                  onPressed: () async {
-                    String response = await sellAsset(currentStockName!,
-                        stockOrderVolumeController.text, currentStockPrice);
-
-                    Flushbar(
-                      title: "Result",
-                      message: "Sorry" + response,
-                      duration: const Duration(seconds: 2),
-                    ).show(context).then((value) => Navigator.pop(context));
-                  },
-                  child: const Text(
-                    'Sell',
-                    textScaleFactor: 2.0,
-                  ),
-                ),
-              ),
+              BuyButtonWidget(
+                  currentStockName: currentStockName,
+                  stockOrderVolumeController: stockOrderVolumeController,
+                  currentStockPrice: currentStockPrice),
+              showSellButton
+                  ? SellButtonWidget(
+                      currentStockName: currentStockName,
+                      stockOrderVolumeController: stockOrderVolumeController,
+                      currentStockPrice: currentStockPrice)
+                  : Container(),
             ],
           ),
         ],

@@ -66,7 +66,7 @@ class AuthenticationService {
   }
 }
 
-Future sellAsset(
+Future<String> sellAsset(
     String currentStockName, String volume, currentStockPrice) async {
   try {
     String uid = FirebaseAuth.instance.currentUser!.uid;

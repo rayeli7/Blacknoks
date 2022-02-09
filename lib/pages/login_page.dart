@@ -4,14 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:blacknoks/models/theme.dart';
 import 'package:blacknoks/widgets/custom_checkbox.dart';
 
-
 import 'package:blacknoks/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
-  
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -26,8 +24,6 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.black,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding:const EdgeInsets.fromLTRB(24.0, 40.0, 24.0, 0),
+          padding: const EdgeInsets.fromLTRB(24.0, 40.0, 24.0, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -49,15 +45,15 @@ class _LoginPageState extends State<LoginPage> {
                     'assets/images/Union2.png',
                     width: 500,
                     height: 100,
-                  ), 
+                  ),
                 ],
               ),
               const SizedBox(
                 height: 48,
               ),
-              Center(child:
-              Form(
-                child: Column(
+              Center(
+                child: Form(
+                  child: Column(
                     children: [
                       Container(
                         width: 250,
@@ -96,7 +92,9 @@ class _LoginPageState extends State<LoginPage> {
                             suffixIcon: IconButton(
                               color: textGrey,
                               splashRadius: 1,
-                              icon: Icon(passwordVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+                              icon: Icon(passwordVisible
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined),
                               onPressed: togglePassword,
                             ),
                             border: const OutlineInputBorder(
@@ -106,8 +104,8 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ],
+                  ),
                 ),
-              ),
               ),
               const SizedBox(
                 height: 32,
@@ -115,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const CustomCheckbox(),                 
+                  const CustomCheckbox(),
                   const SizedBox(
                     width: 12,
                   ),
@@ -128,15 +126,16 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 32,
               ),
-              Center(child:ElevatedButton(
-            onPressed: () {
-              context.read<AuthenticationService>().signIn(
-                    email: emailController.text.trim(),
-                    password: passwordController.text.trim(),
-                  );
-            },
-            child: const Text("Sign in"),
-               ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    context.read<AuthenticationService>().signIn(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                        );
+                  },
+                  child: const Text("Sign in"),
+                ),
               ),
               const SizedBox(
                 height: 24,
@@ -150,14 +149,15 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 32,
               ),
-              Center(child:TextButton(
-            onPressed: () {
-              context.read<AuthenticationService>().signIn(
-                    email: emailController.text.trim(),
-                    password: passwordController.text.trim(),
-                  );
-            },
-            child: const Text("Sign in with Google"),
+              Center(
+                child: TextButton(
+                  onPressed: () {
+                    context.read<AuthenticationService>().signIn(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                        );
+                  },
+                  child: const Text("Sign in with Google"),
                 ),
               ),
               const SizedBox(
@@ -172,7 +172,10 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const RegisterPage()));
                     },
                     child: Text(
                       'Register',

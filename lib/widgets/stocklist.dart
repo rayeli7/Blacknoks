@@ -2,11 +2,9 @@ import 'package:blacknoks/models/livestockdata_model.dart';
 import 'package:blacknoks/services/api(s)/fetch_api.dart';
 import 'package:flutter/material.dart';
 
-import 'buy_modal_bottom_sheet.dart';
+import 'modal_bottom_sheet.dart';
 
 class StocklistWidget extends StatelessWidget {
-
-
   const StocklistWidget({
     Key? key,
     required this.index,
@@ -25,49 +23,45 @@ class StocklistWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-    elevation: 5,
-    child: ListTile(
-      textColor: Colors.black,
-      enableFeedback: true,
-        
-      title: Text(livestockdata[index].name!,
-      style:const TextStyle(
-          color: Colors.black,)
-      ),
-                       
-      subtitle: Text(
-        GSE_Companies[index],
-        style:const TextStyle(
-          color: Colors.grey,
+      elevation: 5,
+      child: ListTile(
+        textColor: Colors.black,
+        enableFeedback: true,
+        title: Text(livestockdata[index].name!,
+            style: const TextStyle(
+              color: Colors.black,
+            )),
+        subtitle: Text(
+          GSE_Companies[index],
+          style: const TextStyle(
+            color: Colors.grey,
+          ),
         ),
-      ),
-                       
-      trailing:SizedBox(
-        width: 90,
-        child: ElevatedButton(
-          onPressed: ()=>showModalBottomSheet(
-            context: context,
-             builder: (context)=>
-             ModalBottomSheet(
-              stockOrderVolumeController: stockOrderVolumeController,
-              currentStockPrice: currentStockPrice, 
-              currentStockName: currentStockName
+        trailing: SizedBox(
+          width: 90,
+          child: ElevatedButton(
+            onPressed: () => showModalBottomSheet(
+              context: context,
+              builder: (context) => ModalBottomSheet(
+                stockOrderVolumeController: stockOrderVolumeController,
+                currentStockPrice: currentStockPrice,
+                currentStockName: currentStockName,
+                showSellButton: false,
               ),
-              ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              livestockdata[index].price!.toString(),
-              style: const TextStyle(
-              color: Colors.black),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                livestockdata[index].price!.toString(),
+                style: const TextStyle(color: Colors.black),
               ),
             ),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color?>(
                 (Set<MaterialState> states) {
-                  if (livestockdata[index].change! > 0 ) {
+                  if (livestockdata[index].change! > 0) {
                     return Colors.green;
-                  } else if (livestockdata[index].change! < 0 ){
+                  } else if (livestockdata[index].change! < 0) {
                     return Colors.redAccent;
                   }
                   return null;
@@ -75,9 +69,8 @@ class StocklistWidget extends StatelessWidget {
               ),
             ),
           ),
-        ),                
+        ),
       ),
     );
   }
 }
-

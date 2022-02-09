@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:blacknoks/widgets/custom_checkbox.dart';
 import '../models/theme.dart';
 
-
-
 import '../services/auth_service.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
@@ -41,7 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
-                   height: 5,
+                    height: 5,
                   ),
                   Image.asset(
                     'assets/images/Union2.png',
@@ -89,7 +87,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           suffixIcon: IconButton(
                             color: textGrey,
                             splashRadius: 1,
-                            icon: Icon(passwordVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+                            icon: Icon(passwordVisible
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined),
                             onPressed: togglePassword,
                           ),
                           border: const OutlineInputBorder(
@@ -115,10 +115,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           suffixIcon: IconButton(
                             color: textGrey,
                             splashRadius: 1,
-                            icon: Icon(passwordConfrimationVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+                            icon: Icon(passwordConfrimationVisible
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined),
                             onPressed: () {
                               setState(() {
-                                passwordConfrimationVisible = !passwordConfrimationVisible;
+                                passwordConfrimationVisible =
+                                    !passwordConfrimationVisible;
                               });
                             },
                           ),
@@ -159,16 +162,17 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(
                 height: 32,
               ),
-               Center(child:ElevatedButton(
-            onPressed: () {
-              context.read<AuthenticationService>().signUp(
-                    email: emailController.text.trim(),
-                    password: passwordController.text.trim(),
-                  );
-            },
-            child: const Text("Register"),
-            ),
-            ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    context.read<AuthenticationService>().signUp(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                        );
+                  },
+                  child: const Text("Register"),
+                ),
+              ),
               const SizedBox(
                 height: 50,
               ),

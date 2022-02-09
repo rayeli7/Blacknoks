@@ -16,7 +16,7 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
   var _passwordController;
   bool isChecked = true;
 
-    @override
+  @override
   void initState() {
     _loadUserEmailPassword();
     super.initState();
@@ -27,12 +27,12 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
     return GestureDetector(
       onTap: () {
         SharedPreferences.getInstance().then(
-                    (prefs) {
-                    prefs.setBool("remember_me", isChecked);                   
-                    prefs.setString('email', _emailController.text);                   
-                    prefs.setString('password', _passwordController.text);
-                    },
-                    );
+          (prefs) {
+            prefs.setBool("remember_me", isChecked);
+            prefs.setString('email', _emailController.text);
+            prefs.setString('password', _passwordController.text);
+          },
+        );
         setState(() {
           isChecked = !isChecked;
         });
@@ -57,27 +57,24 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
   }
 
   //load email and password
-void _loadUserEmailPassword() async {
-try {
-SharedPreferences _prefs = await SharedPreferences.getInstance();
-var _email = _prefs.getString("email") ?? "";
-var _password = _prefs.getString("password") ?? "";
-var _rememberMe = _prefs.getBool("remember_me") ?? false;
-print(_rememberMe);
-print(_email);
-print(_password);
-if (_rememberMe) {
-setState(() {
-isChecked = true;
-});
-_emailController.text = _email;
-_passwordController.text = _password;
+  void _loadUserEmailPassword() async {
+    try {
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      var _email = _prefs.getString("email") ?? "";
+      var _password = _prefs.getString("password") ?? "";
+      var _rememberMe = _prefs.getBool("remember_me") ?? false;
+      print(_rememberMe);
+      print(_email);
+      print(_password);
+      if (_rememberMe) {
+        setState(() {
+          isChecked = true;
+        });
+        _emailController.text = _email;
+        _passwordController.text = _password;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }
-} catch (e) 
-{
-print(e);
-}
-}
-}
-
-

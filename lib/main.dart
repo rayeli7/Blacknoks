@@ -10,11 +10,10 @@ import 'pages/home.dart';
 import 'pages/loading_page.dart';
 import 'pages/login_page.dart';
 
-
-Future <void> main() async {
-WidgetsFlutterBinding.ensureInitialized(); 
-await Firebase.initializeApp();
-runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -29,29 +28,30 @@ class MyApp extends StatelessWidget {
           create: (_) => AuthenticationService(FirebaseAuth.instance),
         ),
         StreamProvider(
-          create: (context) => context.read<AuthenticationService>().authStateChanges, initialData: null,
+          create: (context) =>
+              context.read<AuthenticationService>().authStateChanges,
+          initialData: null,
         )
       ],
-    child:MaterialApp(
-      debugShowCheckedModeBanner: false,
-      routes: {
-        'loading': (_) => const LoadingPage(),
-        '/home': (context) => const Homepage(),
-      },
-      // Application name
-      title: 'Blacknoks',
-      // Application theme data, you can set the colors for the application as
-      // you want
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        routes: {
+          'loading': (_) => const LoadingPage(),
+          '/home': (context) => const Homepage(),
+        },
+        // Application name
+        title: 'Blacknoks',
+        // Application theme data, you can set the colors for the application as
+        // you want
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        // A widget which will be started on application startup
+        home: const SplashScreen(),
       ),
-      // A widget which will be started on application startup
-      home: const SplashScreen(),
-    ),
     );
   }
 }
-
 
 class AuthenticationWrapper extends StatelessWidget {
   const AuthenticationWrapper({Key? key}) : super(key: key);
