@@ -5,15 +5,15 @@ import 'package:http/http.dart' as http;
 class MomoApi {
   static Future<http.StreamedResponse> postRequestToPay() async {
     var headers = {
-      'X-Reference-Id': 'await MomoApiHelpers.getCollectionUUID()',
-      //TODO: changes with every transaction
+      'X-Reference-Id': await MomoApiHelpers.getCollectionUUID(),
+      //changes with every transaction
       'X-Target-Environment': 'sandbox',
       'Ocp-Apim-Subscription-Key':
           'b66795091e1842b5ad1c2a730bbd0db6', //does not change for a user
       'Content-Type': 'application/json',
       'Authorization':
           'Bearer ' + (await MomoApiHelpers.getAccessToken()).accessToken,
-      //TODO:Authorization(i.e acces token)changes with every transaction
+      //Authorization(i.e acces token)changes with every transaction
     };
     var request = http.Request(
         'POST',
@@ -30,11 +30,6 @@ class MomoApi {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
-    if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
-    } else {
-      print(response.reasonPhrase);
-    }
     return response;
   }
 }

@@ -1,4 +1,6 @@
-import 'package:another_flushbar/flushbar.dart';
+// ignore_for_file: file_names
+
+import 'package:another_flushbar/flushbar.dart' show Flushbar;
 import 'package:flutter/material.dart';
 
 import '../services/auth_service.dart';
