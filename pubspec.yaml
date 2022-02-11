@@ -48,7 +48,7 @@ dependencies:
   animations: ^2.0.2
   syncfusion_flutter_charts: ^19.4.47
   another_flushbar: ^1.10.28
-
+  
   
 
 
@@ -56,6 +56,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  
+  flutter_launcher_icons: ^0.9.2
+  flutter_native_splash: ^2.0.2
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -114,4 +117,16 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: assets/images/Union2.png
+  adaptive_icon_foreground: assets/images/Union3.png
+  adaptive_icon_background: '#000000'
+
+flutter_native_splash:
+  color: "#000000"
+  image: assets/images/Union2.png  
 
