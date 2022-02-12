@@ -33,11 +33,13 @@ class BuyButtonWidget extends StatelessWidget {
           String response = await buyAsset(currentStockName!,
               stockOrderVolumeController.text, currentStockPrice);
 
+          Navigator.pop(context);
+
           Flushbar(
             title: "Result",
-            message: "Your order is being Processed " + response,
+            message: response,
             duration: const Duration(seconds: 5),
-          ).show(context).then((value) => Navigator.pop(context));
+          ).show(context);
         },
         child: const Text(
           'Buy',

@@ -55,6 +55,8 @@ dependencies:
 
 
 dev_dependencies:
+  flutter_native_splash: ^2.0.2
+  flutter_launcher_icons: ^0.9.2
   flutter_test:
     sdk: flutter
 
@@ -115,4 +117,15 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/Union2.png"
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: assets/images/play_store_512.png
+  remove_alpha_ios: true
+
+flutter_native_splash:
+  image: assets/images/Union2.png
+  color: "#000000"
 
