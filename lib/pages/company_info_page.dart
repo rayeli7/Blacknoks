@@ -4,37 +4,44 @@ import 'package:blacknoks/models/company_info_model.dart';
 import 'package:blacknoks/services/api(s)/fetch_api.dart';
 import 'package:flutter/material.dart';
 
-class CompanyInfoPage extends StatefulWidget {
-  final String stockName;
-  const CompanyInfoPage({Key? key, required this.stockName}) : super(key: key);
-
-  @override
-  State<CompanyInfoPage> createState() => _CompanyInfoPageState();
-}
-
-class _CompanyInfoPageState extends State<CompanyInfoPage> {
-  CompanyInfo? stockInfo;
-
-  _getStockInfo() {
-    API.getStockInfo(widget.stockName).then((response) {
-      setState(() {
-        final jsonResponse = json.decode(response.body);
-        stockInfo = CompanyInfo.fromJson(jsonResponse);
-      });
-    });
-  }
-
-  @override
-  initState() {
-    super.initState();
-    _getStockInfo();
-  }
+class CompanyInfoPage extends StatelessWidget {
+  final CompanyInfo stockInfo;
+  const CompanyInfoPage({Key? key, required this.stockInfo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('${stockInfo?.company?.name}'),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                '${stockInfo.company?.name}',
+                style: const TextStyle(fontSize: 30),
+              ),
+              Text('Ticker: ${stockInfo.name}'),
+              Text('Capital: GH￠ ${stockInfo.capital}.'),
+              Text('Shares: ${stockInfo.shares}'),
+              Text('Price: GH￠ ${stockInfo.price}.'),
+              Text('Dividend Per Share(DPS): ${stockInfo.dps}'),
+              Text('Earning Per Share(EPS): ${stockInfo.eps}'),
+              const Text(
+                'Company Info.',
+                style: TextStyle(fontSize: 25),
+              ),
+              Text('Address: ${stockInfo.company?.address}'),
+              Text('${stockInfo.company?.email}'),
+              Text('${stockInfo.company?.facsimile}'),
+              Text('${stockInfo.company?.telephone}'),
+              Text('${stockInfo.company?.sector}'),
+              Text('${stockInfo.company?.industry}'),
+              Text('Directors: ${stockInfo.company?.directors}'),
+            ],
+          ),
+        ),
       ),
     );
   }
