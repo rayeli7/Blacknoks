@@ -4,7 +4,9 @@ import 'package:blacknoks/models/livestockdata_model.dart';
 import 'package:blacknoks/pages/markets.dart';
 import 'package:blacknoks/pages/user_portfoliopage.dart';
 import 'package:blacknoks/services/api(s)/fetch_api.dart';
+import 'package:blacknoks/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -67,11 +69,10 @@ class _HomeState extends State<Homepage> {
           ),
           actions: <Widget>[
             IconButton(
-              icon: const Icon(Icons.add_alert),
+              icon: const Icon(Icons.logout_rounded),
               tooltip: 'Show Snackbar',
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('This is a snackbar')));
+                context.read<AuthenticationService>().signOut();
               },
             ),
           ]),

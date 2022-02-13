@@ -1,3 +1,5 @@
+import 'package:another_flushbar/flushbar.dart';
+import 'package:blacknoks/pages/loading_page.dart';
 import 'package:blacknoks/pages/register_page.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +19,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
   bool passwordVisible = false;
   void togglePassword() {
     setState(() {
@@ -53,6 +56,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Center(
                 child: Form(
+                  key: _key,
                   child: Column(
                     children: [
                       Container(
@@ -62,13 +66,15 @@ class _LoginPageState extends State<LoginPage> {
                           color: textWhiteGrey,
                           borderRadius: BorderRadius.circular(90.0),
                         ),
-                        child: TextFormField(
-                          controller: emailController,
-                          decoration: InputDecoration(
-                            hintText: 'Email',
-                            hintStyle: heading6.copyWith(color: textGrey),
-                            border: const OutlineInputBorder(
-                              borderSide: BorderSide.none,
+                        child: Center(
+                          child: TextFormField(
+                            controller: emailController,
+                            decoration: InputDecoration(
+                              hintText: 'Email',
+                              hintStyle: heading6.copyWith(color: textGrey),
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                              ),
                             ),
                           ),
                         ),
@@ -83,22 +89,24 @@ class _LoginPageState extends State<LoginPage> {
                           color: textWhiteGrey,
                           borderRadius: BorderRadius.circular(90.0),
                         ),
-                        child: TextFormField(
-                          controller: passwordController,
-                          obscureText: !passwordVisible,
-                          decoration: InputDecoration(
-                            hintText: 'Password',
-                            hintStyle: heading6.copyWith(color: textGrey),
-                            suffixIcon: IconButton(
-                              color: textGrey,
-                              splashRadius: 1,
-                              icon: Icon(passwordVisible
-                                  ? Icons.visibility_outlined
-                                  : Icons.visibility_off_outlined),
-                              onPressed: togglePassword,
-                            ),
-                            border: const OutlineInputBorder(
-                              borderSide: BorderSide.none,
+                        child: Center(
+                          child: TextFormField(
+                            controller: passwordController,
+                            obscureText: !passwordVisible,
+                            decoration: InputDecoration(
+                              hintText: 'Password',
+                              hintStyle: heading6.copyWith(color: textGrey),
+                              suffixIcon: IconButton(
+                                color: textGrey,
+                                splashRadius: 1,
+                                icon: Icon(passwordVisible
+                                    ? Icons.visibility_outlined
+                                    : Icons.visibility_off_outlined),
+                                onPressed: togglePassword,
+                              ),
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                              ),
                             ),
                           ),
                         ),
@@ -128,11 +136,18 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
-                    context.read<AuthenticationService>().signIn(
-                          email: emailController.text.trim(),
-                          password: passwordController.text.trim(),
-                        );
+                  onPressed: () async {
+                    String? response =
+                        await context.read<AuthenticationService>().signIn(
+                              email: emailController.text.trim(),
+                              password: passwordController.text.trim(),
+                            );
+                    Flushbar(
+                      isDismissible: true,
+                      duration: const Duration(seconds: 2),
+                      title: 'Sign In',
+                      message: response,
+                    ).show(context);
                   },
                   child: const Text("Sign in"),
                 ),
@@ -151,11 +166,26 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Center(
                 child: TextButton(
-                  onPressed: () {
-                    context.read<AuthenticationService>().signIn(
-                          email: emailController.text.trim(),
-                          password: passwordController.text.trim(),
-                        );
+                  onPressed: () async {
+                    String? response =
+                        await context.read<AuthenticationService>().signIn(
+                              email: emailController.text.trim(),
+                              password: passwordController.text.trim(),
+                            );
+                    if (response == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Processing Data')),
+                      );
+                    }
+                    Flushbar(
+                      duration: const Duration(seconds: 2),
+                      title: 'Sign In',
+                      message: response,
+                    ).show(context);
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoadingPage()));
                   },
                   child: const Text("Sign in with Google"),
                 ),
