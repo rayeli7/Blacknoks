@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 30,
                   ),
                   Image.asset(
-                    'assets/images/Union2.png',
+                    'assets/images/blacknocks_logo_white.png',
                     width: 500,
                     height: 100,
                   ),

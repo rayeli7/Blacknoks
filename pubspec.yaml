@@ -120,12 +120,12 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/Union2.png"
+  image_path: "assets/images/blacknocks_logo_white.png"
   adaptive_icon_background: "#000000"
   adaptive_icon_foreground: assets/images/play_store_512.png
   remove_alpha_ios: true
 
 flutter_native_splash:
-  image: assets/images/Union2.png
+  image: assets/images/launcher_icon.png
   color: "#000000"
 

@@ -29,6 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Container(
         color: Colors.black,
-        child: const Image(image: AssetImage("assets/images/Union2.png")));
+        child: const Image(
+            image: AssetImage("assets/images/blacknocks_logo_white.png")));
   }
 }

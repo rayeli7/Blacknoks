@@ -51,7 +51,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 5,
                   ),
                   Image.asset(
-                    'assets/images/Union2.png',
+                    'assets/images/blacknocks_logo_white.png',
                     width: 500,
                     height: 100,
                   ),
@@ -78,10 +78,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           if (email.isEmpty)
                             return 'We need an email address';
                           else if (!regex.hasMatch(email))
-                            // 3
                             return "That doesn't look like an email address";
                           else
-                            // 4
                             return null;
                         },
                         autofocus: true,
