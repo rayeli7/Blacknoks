@@ -1,4 +1,5 @@
 import 'package:another_flushbar/flushbar.dart';
+import 'package:blacknoks/pages/home.dart';
 import 'package:blacknoks/pages/loading_page.dart';
 import 'package:blacknoks/pages/register_page.dart';
 import 'package:flutter/material.dart';
@@ -172,11 +173,6 @@ class _LoginPageState extends State<LoginPage> {
                               email: emailController.text.trim(),
                               password: passwordController.text.trim(),
                             );
-                    if (response == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Processing Data')),
-                      );
-                    }
                     Flushbar(
                       duration: const Duration(seconds: 2),
                       title: 'Sign In',
@@ -185,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const LoadingPage()));
+                            builder: (context) => const Homepage()));
                   },
                   child: const Text("Sign in with Google"),
                 ),

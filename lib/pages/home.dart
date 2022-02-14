@@ -19,6 +19,7 @@ class _HomeState extends State<Homepage> {
   List<LiveStockData> livestockdata = <LiveStockData>[];
   int _selectedIndex = 0;
   late bool _isLoading;
+  late PageController _pageController;
 
   _getLiveStockData() {
     API.getLiveStockData().then((response) {
@@ -33,6 +34,7 @@ class _HomeState extends State<Homepage> {
   @override
   initState() {
     super.initState();
+    _pageController = PageController(initialPage: _selectedIndex);
     _isLoading = true;
     Future.delayed(const Duration(seconds: 0), () {
       setState(() {
@@ -44,7 +46,15 @@ class _HomeState extends State<Homepage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      _pageController.jumpToPage(index);
     });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -63,7 +73,7 @@ class _HomeState extends State<Homepage> {
           title: const SizedBox(
             child: Image(
               height: 55,
-              image: AssetImage("assets/images/Vector.png"),
+              image: AssetImage("assets/images/blacknocks_logo_black.png"),
               fit: BoxFit.contain,
             ),
           ),
@@ -77,7 +87,13 @@ class _HomeState extends State<Homepage> {
             ),
           ]),
       backgroundColor: Colors.white,
-      body: _pages[_selectedIndex],
+      body: PageView(
+        controller: _pageController,
+        //The following parameter is just to prevent
+        //the user from swiping to the next page.
+        physics: NeverScrollableScrollPhysics(),
+        children: _pages,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         items: const <BottomNavigationBarItem>[
