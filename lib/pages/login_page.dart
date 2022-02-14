@@ -1,6 +1,5 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:blacknoks/pages/home.dart';
-import 'package:blacknoks/pages/loading_page.dart';
 import 'package:blacknoks/pages/register_page.dart';
 import 'package:flutter/material.dart';
 
