@@ -45,7 +45,6 @@ class _PortfolioListWidgetState extends State<PortfolioListWidget> {
             changeValue: changeValue,
           ),
           openBuilder: (context, action) => ModalBottomSheet(
-            stockOrderVolumeController: stockOrderVolumeController,
             currentStockPrice: currentStockPrice,
             currentStockName: stockTicker,
             changeValue: changeValue,

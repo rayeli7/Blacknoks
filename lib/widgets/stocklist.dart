@@ -1,6 +1,7 @@
 import 'package:blacknoks/models/livestockdata_model.dart';
 import 'package:flutter/material.dart';
 
+import '../services/api(s)/fetch_api.dart';
 import 'modal_bottom_sheet.dart';
 
 class StocklistWidget extends StatelessWidget {
@@ -8,13 +9,9 @@ class StocklistWidget extends StatelessWidget {
     Key? key,
     required this.index,
     required this.livestockdata,
-    required this.stockOrderVolumeController,
-    required this.stockInfo,
   }) : super(key: key);
 
   final List<LiveStockData> livestockdata;
-  final TextEditingController stockOrderVolumeController;
-  final String? stockInfo;
   final int index;
 
   @override
@@ -29,7 +26,7 @@ class StocklistWidget extends StatelessWidget {
               color: Colors.black,
             )),
         subtitle: Text(
-          '$stockInfo',
+          '${GSE_Companies[index]}',
           style: const TextStyle(
             color: Colors.grey,
           ),
@@ -40,7 +37,6 @@ class StocklistWidget extends StatelessWidget {
             onPressed: () => showModalBottomSheet(
               context: context,
               builder: (context) => ModalBottomSheet(
-                stockOrderVolumeController: stockOrderVolumeController,
                 currentStockPrice: livestockdata[index].price,
                 currentStockName: livestockdata[index].name,
                 showSellButton: false,

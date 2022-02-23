@@ -5,16 +5,16 @@ import 'buy_buttonWidget.dart';
 import 'sell_buttonWidget.dart';
 
 class ModalBottomSheet extends StatelessWidget {
-  const ModalBottomSheet({
+  ModalBottomSheet({
     Key? key,
-    required this.stockOrderVolumeController,
     required this.currentStockPrice,
     required this.currentStockName,
     required this.showSellButton,
     changeValue,
   }) : super(key: key);
 
-  final TextEditingController stockOrderVolumeController;
+  final TextEditingController stockOrderVolumeController =
+      TextEditingController(text: '100');
   final double? currentStockPrice;
   final String? currentStockName;
   final bool showSellButton;

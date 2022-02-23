@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'dart:async';
+
+import '../../models/company_info_model.dart';
 
 const baseUrl = "https://dev.kwayisi.org/apis/gse/live";
 const baseInfoUrl =
@@ -17,44 +21,52 @@ class API {
   }
 }
 
-// ignore: constant_identifier_names
+Future<CompanyInfo> getStockInfo(stockName) async {
+  var response = await API.getStockInfo(stockName);
+  if (response.statusCode == 200) {
+    final jsonResponse = json.decode(response.body);
+    return CompanyInfo.fromJson(jsonResponse);
+  } else {
+    throw Exception('Failed to load album');
+  }
+}
+
 const GSE_Companies = [
   'AngloGold Ashanti Depository Shares',
   'Access Bank Ghana Plc',
   'Agricultural Development Bank',
   'AngloGold Ashanti Limited',
-  'Aluworks LTD',
-  'Benso Oil Palm Plantation Ltd',
-  'CalBank PLC',
-  'Clydestone (Ghana) Limited',
+  'Aluworks Limited',
+  'Benso Oil Palm Plantation Limited',
+  'CAL Bank Limited',
+  'Clydestone Ghana Limited',
   'Camelot Ghana Ltd',
-  'Cocoa Processing Company',
+  'Cocoa Processing Company Limited',
   'Dannex Ayrton Starwin Plc',
   'Digicut Advertising and Production Limited',
   'Ecobank Ghana Ltd',
-  'Enterprise Ghana PLC',
-  'Ecobank Transnational Incorporation',
-  'Fan Milk Limited',
+  'Enterprise Group Limited',
+  'Ecobank Transnational Incorporated',
+  'Fan Milk PLC',
   'Ghana Commercial Bank Limited',
-  'Guinness Ghana Breweries Plc',
-  'NewGold Issuer Limited',
+  'Guinness Ghana Breweries Limited',
+  'NewGold Issuer (RF) Limited',
   'Ghana Oil Company Limited',
-  'Golden Star Resources Ltd.',
-  'HORDS LTD',
+  'HORDS Limited',
   'Intravenous Infusions Limited',
   'Mega African Capital Limited',
   'Meridian-Marshalls Holdings',
-  'MTN Ghana',
+  'Scancom PLC',
   'Produce Buying Company Ltd.',
   'Pesewa One Plc',
-  'Republic Bank (Ghana) PLC',
+  'Republic Bank Ghana Limited',
   'Samba Foods Ltd',
-  'Standard Chartered Bank Ghana PLC',
+  'Standard Chartered Bank (Ghana) Limited',
+  'Standard Chartered Bank (Ghana) Limited',
   'SIC Insurance Company Limited',
   'Societe Generale Ghana Limited',
-  'Sam Wood Ltd.',
-  'Trust Bank Limited (THE GAMBIA)',
+  'Trust Bank (GAMBIA) Limited',
   'Tullow Oil Plc',
-  'TOTAL PETROLEUM GHANA PLC',
-  'Unilever Ghana PLC',
+  'Total Petroleum Ghana Limited',
+  'Unilever Ghana Limited',
 ];
