@@ -18,27 +18,6 @@ class _LoadingPageState extends State<LoadingPage> {
         shrinkWrap: true,
         itemCount: GSE_Companies.length,
         itemBuilder: (context, index) {
-          if (index == 0) {
-            return Container(
-              height: 50,
-              padding: const EdgeInsets.all(5),
-              color: Colors.amber,
-              child: ListTile(
-                title: const Text('Symbol'),
-                trailing: SizedBox(
-                  width: 90,
-                  child: RichText(
-                    text: const TextSpan(
-                        style: TextStyle(fontSize: 14.0, color: Colors.black),
-                        children: <TextSpan>[
-                          TextSpan(text: 'Price/GH'),
-                          TextSpan(text: '₵', style: TextStyle(fontSize: 15))
-                        ]),
-                  ),
-                ),
-              ),
-            );
-          }
           return Card(
             elevation: 2,
             child: ListTile(

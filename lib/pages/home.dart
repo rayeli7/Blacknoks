@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:blacknoks/models/livestockdata_model.dart';
 import 'package:blacknoks/pages/markets.dart';
 import 'package:blacknoks/pages/user_portfoliopage.dart';
@@ -21,24 +19,17 @@ class _HomeState extends State<Homepage> {
   late bool _isLoading;
   late PageController _pageController;
 
-  _getLiveStockData() {
-    API.getLiveStockData().then((response) {
-      setState(() {
-        Iterable list = json.decode(response.body);
-        livestockdata =
-            list.map((model) => LiveStockData.fromJson(model)).toList();
-      });
-    });
-  }
-
   @override
   initState() {
     super.initState();
     _pageController = PageController(initialPage: _selectedIndex);
     _isLoading = true;
     Future.delayed(const Duration(seconds: 0), () {
-      setState(() {
-        _getLiveStockData()(_isLoading = false);
+      setState(() async {
+        livestockdata = await getLiveStockData();
+        setState(() {
+          _isLoading = false;
+        });
       });
     });
   }
@@ -53,7 +44,6 @@ class _HomeState extends State<Homepage> {
   @override
   void dispose() {
     _pageController.dispose();
-
     super.dispose();
   }
 

@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 
 import '../../models/company_info_model.dart';
+import '../../models/livestockdata_model.dart';
 
 const baseUrl = "https://dev.kwayisi.org/apis/gse/live";
 const baseInfoUrl =
@@ -21,8 +22,18 @@ class API {
   }
 }
 
+Future<List<LiveStockData>> getLiveStockData() async{
+  http.Response response = await API.getLiveStockData();
+   if (response.statusCode == 200) {
+    Iterable list = json.decode(response.body);
+  return list.map((model) => LiveStockData.fromJson(model)).toList();
+  } else {
+    throw Exception('Failed to load album');
+  }
+}
+
 Future<CompanyInfo> getStockInfo(stockName) async {
-  var response = await API.getStockInfo(stockName);
+  http.Response response = await API.getStockInfo(stockName);
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
     return CompanyInfo.fromJson(jsonResponse);

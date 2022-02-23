@@ -1,10 +1,10 @@
 class CompanyInfo {
   final double? capital;
-  final Company? company;
+  final Company company;
   final double? dps;
   final double? eps;
-  final String? name;
-  final double? price;
+  final String name;
+  final double price;
   final int? shares;
 
   CompanyInfo(this.capital, this.name, this.price, this.shares, this.company,
@@ -34,11 +34,11 @@ class CompanyInfo {
 
 class Company {
   final String? address;
-  final List<Director?> directors;
+  final List<Director> directors;
   final String? email;
   final String? facsimile;
   final String? industry;
-  final String? name;
+  final String name;
   final String? sector;
   final String? telephone;
   final String? website;
@@ -76,7 +76,7 @@ class Company {
 
 class Director {
   String? position;
-  String? name;
+  String name;
 
   Director(
     this.position,
