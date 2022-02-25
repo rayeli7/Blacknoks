@@ -16,8 +16,8 @@ Future<String> buyAsset(
     return FirebaseFirestore.instance.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(documentReference);
       if (!snapshot.exists) {
-        var finalResponse = await MomoApi.postRequestToPay().then((response) {
-          if (response.statusCode == 200) {
+        var finalResponse = await MomoApi.postRequestToPay(cost, currentStockName).then((response) {
+          if (response.statusCode == 202) {
             documentReference.set(
                 {'Volume': value, 'Price': currentStockPrice, 'Cost': cost});
             return response;
@@ -30,12 +30,14 @@ Future<String> buyAsset(
       var newVolume = snapshot['Volume'] + value;
       var newCost = snapshot['Cost'] + cost;
       var newPrice = newCost / newVolume;
-      var finalResponse = await MomoApi.postRequestToPay().then((response) {
-        if (response.statusCode == 200) {
+      var finalResponse = await MomoApi.postRequestToPay(cost, currentStockName).then((response) {
+        if (response.statusCode == 202) {
           transaction.update(documentReference,
               {'Volume': newVolume, 'Price': newPrice, 'Cost': newCost});
           return response;
         } else {
+          print(response.reasonPhrase);
+          print(response.statusCode);
           return 'Sorry transaction did not complete';
         }
       });

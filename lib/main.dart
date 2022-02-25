@@ -1,4 +1,5 @@
 import 'package:blacknoks/pages/splashscreen.dart';
+import 'package:blacknoks/services/livedata_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:blacknoks/services/auth_service.dart';
 
@@ -31,6 +32,9 @@ class MyApp extends StatelessWidget {
           create: (context) =>
               context.read<AuthenticationService>().authStateChanges,
           initialData: null,
+        ),
+        ChangeNotifierProvider<LiveProvider>(
+          create: (_)=> LiveProvider()
         )
       ],
       child: MaterialApp(

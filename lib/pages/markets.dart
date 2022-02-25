@@ -8,37 +8,35 @@ import 'package:blacknoks/widgets/stocklist.dart';
 
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
+import 'package:provider/provider.dart';
 
 import '../services/api(s)/fetch_api.dart';
+import '../services/livedata_provider.dart';
 
 class GSEMarketsPage extends StatelessWidget {
-  final List<LiveStockData> livestockdata;
-  final bool isLoading;
-
   const GSEMarketsPage({
     Key? key,
-    required this.livestockdata,
-    required this.isLoading,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var _p = Provider.of<LiveProvider>(context);
+    List<LiveStockData> _livestockdata = _p.livestockdata;
     return Column(
       children: [
         Flexible(
-          child: isLoading
+          child: _p.isLoading
               ? const LoadingPage()
               : ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  itemCount: livestockdata.length,
+                  itemCount: _livestockdata.length,
                   itemBuilder: (context, index) {
-                    String? currentStockName =
-                        livestockdata[index].name!;
+                    String? currentStockName = _livestockdata[index].name!;
                     return OpenContainer(
                       transitionDuration: const Duration(seconds: 1),
                       closedBuilder: (context, action) => StocklistWidget(
-                          livestockdata: livestockdata, index: index),
+                          livestockdata: _livestockdata, index: index),
                       openBuilder: (context, action) => FutureBuilder(
                         future: getStockInfo(currentStockName),
                         builder: (context, snapshot) {

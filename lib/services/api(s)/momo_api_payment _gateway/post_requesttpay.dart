@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'package:blacknoks/services/helpers/momo_api_helpers.dart';
 import 'package:http/http.dart' as http;
 
+import '../../api_helpers/momo_api_helpers.dart';
+
 class MomoApi {
-  static Future<http.StreamedResponse> postRequestToPay() async {
+  static Future<http.StreamedResponse> postRequestToPay(double amount, String ticker) async {
     var headers = {
       'X-Reference-Id': await MomoApiHelpers.getCollectionUUID(),
       //changes with every transaction
@@ -20,12 +21,12 @@ class MomoApi {
         Uri.parse(
             'https://sandbox.momodeveloper.mtn.com/collection/v1_0/requesttopay'));
     request.body = json.encode({
-      "amount": "5.0",
+      "amount": "$amount",
       "currency": "EUR",
-      "externalId": "635368786",
-      "payer": {"partyIdType": "MSISDN", "partyId": "0248888736"},
-      "payerMessage": "Pay for product a",
-      "payeeNote": "payer note"
+      "externalId": "635368786",//TODO 2: Add id generator
+      "payer": {"partyIdType": "MSISDN", "partyId": "0554421283"},//TODO 1: Add field for phone number
+      "payerMessage": "Stock Purchase Order Received $amount of $ticker",
+      "payeeNote": "The Transaction Is Being Processed"
     });
     request.headers.addAll(headers);
 

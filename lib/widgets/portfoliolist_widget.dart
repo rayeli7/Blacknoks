@@ -1,58 +1,56 @@
 import 'package:animations/animations.dart';
-import 'package:blacknoks/models/livestockdata_model.dart';
+import 'package:blacknoks/services/livedata_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../pages/loading_page.dart';
 import 'modal_bottom_sheet.dart';
 
-class PortfolioListWidget extends StatefulWidget {
+class PortfolioListWidget extends StatelessWidget {
   final AsyncSnapshot<QuerySnapshot<Object?>> snapshot;
-  final List<LiveStockData> liveStockData;
-  const PortfolioListWidget(
-      {Key? key, required this.snapshot, required this.liveStockData})
+  const PortfolioListWidget({Key? key, required this.snapshot})
       : super(key: key);
 
   @override
-  State<PortfolioListWidget> createState() => _PortfolioListWidgetState();
-}
-
-class _PortfolioListWidgetState extends State<PortfolioListWidget> {
-  var stockOrderVolumeController = TextEditingController(text: '100');
-
-  @override
   Widget build(BuildContext context) {
-    var snapshots = widget.snapshot;
-    return ListView(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      children: snapshots.data!.docs.map((document) {
-        double price = document['Price'];
-        // ignore: unused_local_variable
-        double cost = document['Cost'];
-        double volume = document['Volume'];
-        String stockTicker = document.id;
-        var livestockdata = (widget.liveStockData)
-            .where((element) => element.name == stockTicker);
-        final double? currentStockPrice = livestockdata.elementAt(0).price;
-        var changeValue = livestockdata.elementAt(0).change;
-        return OpenContainer(
-          transitionDuration: const Duration(seconds: 1),
-          closedBuilder: (context, action) => _Card(
-            stockTicker: stockTicker,
-            currentStockPrice: currentStockPrice,
-            price: price,
-            volume: volume,
-            changeValue: changeValue,
-          ),
-          openBuilder: (context, action) => ModalBottomSheet(
-            currentStockPrice: currentStockPrice,
-            currentStockName: stockTicker,
-            changeValue: changeValue,
-            showSellButton: true,
-          ),
-        );
-      }).toList(),
-    );
+    var p = Provider.of<LiveProvider>(context, listen: false);
+    var snapshots = snapshot;
+
+    return p.isLoading
+        ? const LoadingPage()
+        : ListView(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            children: snapshots.data!.docs.map((document) {
+              double price = document['Price'];
+              // ignore: unused_local_variable
+              double cost = document['Cost'];
+              double volume = document['Volume'];
+              String stockTicker = document.id;
+              var livestockdata = (p.livestockdata)
+                  .where((element) => element.name == stockTicker);
+              final double? currentStockPrice =
+                  livestockdata.elementAt(0).price;
+              var changeValue = livestockdata.elementAt(0).change;
+              return OpenContainer(
+                transitionDuration: const Duration(seconds: 1),
+                closedBuilder: (context, action) => _Card(
+                  stockTicker: stockTicker,
+                  currentStockPrice: currentStockPrice,
+                  price: price,
+                  volume: volume,
+                  changeValue: changeValue,
+                ),
+                openBuilder: (context, action) => ModalBottomSheet(
+                  currentStockPrice: currentStockPrice,
+                  currentStockName: stockTicker,
+                  changeValue: changeValue,
+                  showSellButton: true,
+                ),
+              );
+            }).toList(),
+          );
   }
 }
 

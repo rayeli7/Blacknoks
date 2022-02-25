@@ -1,4 +1,3 @@
-import 'package:blacknoks/models/livestockdata_model.dart';
 import 'package:blacknoks/models/piechart_chartdata_model.dart';
 import 'package:blacknoks/widgets/portfoliolist_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,10 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class UserPortfolioPage extends StatefulWidget {
-  final List<LiveStockData> livestockdata;
 
-  const UserPortfolioPage({Key? key, required this.livestockdata})
+class UserPortfolioPage extends StatefulWidget {
+
+  const UserPortfolioPage({Key? key,})
       : super(key: key);
 
   @override
@@ -119,7 +118,7 @@ class _UserPortfolioPageState extends State<UserPortfolioPage> {
                 Flexible(
                     child: PortfolioListWidget(
                         snapshot: snapshot,
-                        liveStockData: widget.livestockdata)),
+                      )),
               ]);
             }));
   }
