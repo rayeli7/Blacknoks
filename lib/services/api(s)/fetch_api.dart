@@ -22,11 +22,11 @@ class API {
   }
 }
 
-Future<List<LiveStockData>> getLiveStockData() async{
+Future<List<LiveStockData>> getLiveStockData() async {
   http.Response response = await API.getLiveStockData();
-   if (response.statusCode == 200) {
+  if (response.statusCode == 200) {
     Iterable list = json.decode(response.body);
-  return list.map((model) => LiveStockData.fromJson(model)).toList();
+    return list.map((model) => LiveStockData.fromJson(model)).toList();
   } else {
     throw Exception('Failed to load album');
   }
@@ -41,6 +41,9 @@ Future<CompanyInfo> getStockInfo(stockName) async {
     throw Exception('Failed to load album');
   }
 }
+
+
+List<CompanyInfo> companyInfoList = <CompanyInfo>[];
 
 const GSE_Companies = [
   'AngloGold Ashanti Depository Shares',

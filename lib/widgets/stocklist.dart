@@ -1,33 +1,29 @@
-import 'package:blacknoks/models/livestockdata_model.dart';
+import 'package:blacknoks/services/livedata_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../services/api(s)/fetch_api.dart';
-import '../services/livedata_provider.dart';
 import 'modal_bottom_sheet.dart';
 
 class StocklistWidget extends StatelessWidget {
-  const StocklistWidget({
-    Key? key,
-    required this.index,
-    required this.livestockdata,
-  }) : super(key: key);
+  StocklistWidget({Key? key, required this.index}) : super(key: key);
 
-  final List<LiveStockData> livestockdata;
   final int index;
 
   @override
   Widget build(BuildContext context) {
+    var _provider = Provider.of<LiveProvider>(context, listen: false);
     return Card(
       elevation: 5,
       child: ListTile(
         textColor: Colors.black,
         enableFeedback: true,
-        title: Text(livestockdata[index].name!,
+        title: Text(_provider.livestockdata[index].name,
             style: const TextStyle(
               color: Colors.black,
             )),
-        subtitle: Text(
+        subtitle: //companyInfoList.length != _provider.livestockdata.length ? Container():
+            Text(
           '${GSE_Companies[index]}',
           style: const TextStyle(
             color: Colors.grey,
@@ -39,24 +35,24 @@ class StocklistWidget extends StatelessWidget {
             onPressed: () => showModalBottomSheet(
               context: context,
               builder: (context) => ModalBottomSheet(
-                currentStockPrice: livestockdata[index].price,
-                currentStockName: livestockdata[index].name,
                 showSellButton: false,
+                currentStockName: _provider.livestockdata[index].name,
+                currentStockPrice: _provider.livestockdata[index].price,
               ),
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                livestockdata[index].price!.toString(),
+                _provider.livestockdata[index].price.toString(),
                 style: const TextStyle(color: Colors.black),
               ),
             ),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color?>(
                 (Set<MaterialState> states) {
-                  if (livestockdata[index].change! > 0) {
+                  if (_provider.livestockdata[index].change > 0) {
                     return Colors.green;
-                  } else if (livestockdata[index].change! < 0) {
+                  } else if (_provider.livestockdata[index].change < 0) {
                     return Colors.redAccent;
                   }
                   return null;

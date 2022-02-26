@@ -1,8 +1,8 @@
 class LiveStockData {
-  double? change;
-  String? name;
-  double? price;
-  int? volume;
+  double change;
+  String name;
+  double price;
+  int volume;
 
   LiveStockData(this.change, this.name, this.price, this.volume);
 

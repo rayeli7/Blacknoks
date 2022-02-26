@@ -14,10 +14,10 @@ class PortfolioListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var p = Provider.of<LiveProvider>(context, listen: false);
+    var _p = Provider.of<LiveProvider>(context, listen: false);
     var snapshots = snapshot;
 
-    return p.isLoading
+    return Provider.of<LiveProvider>(context).isLoading
         ? const LoadingPage()
         : ListView(
             scrollDirection: Axis.vertical,
@@ -28,7 +28,7 @@ class PortfolioListWidget extends StatelessWidget {
               double cost = document['Cost'];
               double volume = document['Volume'];
               String stockTicker = document.id;
-              var livestockdata = (p.livestockdata)
+              var livestockdata = (_p.livestockdata)
                   .where((element) => element.name == stockTicker);
               final double? currentStockPrice =
                   livestockdata.elementAt(0).price;
@@ -43,10 +43,10 @@ class PortfolioListWidget extends StatelessWidget {
                   changeValue: changeValue,
                 ),
                 openBuilder: (context, action) => ModalBottomSheet(
-                  currentStockPrice: currentStockPrice,
-                  currentStockName: stockTicker,
                   changeValue: changeValue,
                   showSellButton: true,
+                  currentStockName: stockTicker,
+                  currentStockPrice: currentStockPrice,
                 ),
               );
             }).toList(),
