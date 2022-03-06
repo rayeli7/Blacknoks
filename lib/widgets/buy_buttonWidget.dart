@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:another_flushbar/flushbar.dart' show Flushbar;
+import 'package:blacknoks/models/flutterwave_response_model.dart';
 import 'package:flutter/material.dart';
 
 import '../services/buy_asset.dart';
@@ -30,14 +31,14 @@ class BuyButtonWidget extends StatelessWidget {
           maximumSize: const Size(150, 100),
         ),
         onPressed: () async {
-          String response = await buyAsset(currentStockName!,
+          FlutterWaveResponse response = await buyAsset(currentStockName!,
               stockOrderVolumeController.text, currentStockPrice);
 
           Navigator.pop(context);
 
           Flushbar(
-            title: "Result",
-            message: response,
+            title: response.status,
+            message: response.message,
             duration: const Duration(seconds: 5),
           ).show(context);
         },

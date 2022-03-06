@@ -16,12 +16,20 @@ class LiveProvider extends ChangeNotifier {
       Iterable list = json.decode(value.body);
       livestockdata =
           list.map((model) => LiveStockData.fromJson(model)).toList();
-      isLoading = false;
-      notifyListeners();
+      for (final element in livestockdata) {
+        if (companyInfoList.length < livestockdata.length) {
+          getStockInfo(element.name).then((value) {
+            companyInfoList.add(value);
+            companyInfoList.sort((a, b) => a.name.compareTo(b.name));
+            print(companyInfoList.length);
+          });
+        }}
+        isLoading = false;
+        notifyListeners();
     }).catchError((onError) {
       isLoading = false;
       notifyListeners();
       print("===onError $onError");
     });
-  } 
+  }
 }

@@ -1,8 +1,10 @@
-import 'package:blacknoks/services/api(s)/momo_api_payment%20_gateway/post_requesttpay.dart';
+import 'package:blacknoks/models/flutterwave_response_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-Future<String> buyAsset(
+import 'api(s)/post_requesttpay.dart';
+
+Future<FlutterWaveResponse> buyAsset(
     String currentStockName, String volume, currentStockPrice) async {
   try {
     String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -16,34 +18,48 @@ Future<String> buyAsset(
     return FirebaseFirestore.instance.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(documentReference);
       if (!snapshot.exists) {
-        var finalResponse = await MomoApi.postRequestToPay(cost, currentStockName).then((response) {
-          if (response.statusCode == 202) {
-            documentReference.set(
-                {'Volume': value, 'Price': currentStockPrice, 'Cost': cost});
+        FlutterWaveResponse finalResponse =
+            await FlutterWaveApi.postRequestToPay(cost, currentStockName)
+                .then((response) {
+          if (response.status == "success") {
+            documentReference.set({
+              'Volume': value.toString(),
+              'Price': currentStockPrice.toString(),
+              'Cost': cost.toStringAsFixed(2)
+            });
             return response;
           } else {
-            return 'Sorry transaction did not complete';
+            return response;
           }
         });
-        return finalResponse.toString();
+        return finalResponse;
       }
       var newVolume = snapshot['Volume'] + value;
-      var newCost = snapshot['Cost'] + cost;
+      double newCost = snapshot['Cost'] + cost;
       var newPrice = newCost / newVolume;
-      var finalResponse = await MomoApi.postRequestToPay(cost, currentStockName).then((response) {
-        if (response.statusCode == 202) {
-          transaction.update(documentReference,
-              {'Volume': newVolume, 'Price': newPrice, 'Cost': newCost});
+      FlutterWaveResponse finalResponse =
+          await FlutterWaveApi.postRequestToPay(cost, currentStockName)
+              .then((response) {
+        if (response.status == "success") {
+          transaction.update(documentReference, {
+            'Volume': newVolume.toString(),
+            'Price': newPrice.toString(),
+            'Cost': newCost.toStringAsFixed(2)
+          });
           return response;
         } else {
-          print(response.reasonPhrase);
-          print(response.statusCode);
-          return 'Sorry transaction did not complete';
+          print(response.status);
+          return response;
         }
       });
-      return finalResponse.toString();
+      return finalResponse;
     });
   } catch (e) {
-    return 'failed';
+    final FlutterWaveResponse error = FlutterWaveResponse(
+        status: 'Failed',
+        message: "Error, Transaction did not complete\n${e.toString()}",
+        meta: Meta(authorization: Authorization(mode: "", redirect: ""))
+        );
+    return error;
   }
 }

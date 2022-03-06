@@ -49,6 +49,7 @@ dependencies:
   syncfusion_flutter_charts: ^19.4.47
   another_flushbar: ^1.10.28
   shimmer: ^2.0.0
+  empty_widget: ^0.0.5
 
   
 

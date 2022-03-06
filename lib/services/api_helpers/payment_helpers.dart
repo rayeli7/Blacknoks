@@ -2,11 +2,11 @@ import 'package:http/http.dart' as http;
 
 import '../../models/accesstoken_model.dart';
 
-class MomoApiHelpers {
+class PaymentApiHelpers {
   static Future<String> getCollectionUUID() async {
     var headers = {
       'Authorization':
-          'Bearer ' + (await MomoApiHelpers.getAccessToken()).accessToken,
+          'Bearer ' + (await PaymentApiHelpers.getAccessToken()).accessToken,
     };
     var request = http.Request(
         'GET', Uri.parse('https://www.uuidgenerator.net/api/version4'));

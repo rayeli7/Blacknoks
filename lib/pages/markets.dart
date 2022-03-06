@@ -21,15 +21,6 @@ class GSEMarketsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var _p = Provider.of<LiveProvider>(context, listen: false);
     final List<LiveStockData> _livestockdata = _p.livestockdata;
-    for (final element in _livestockdata) {
-      if (companyInfoList.length < _livestockdata.length) {
-        getStockInfo(element.name).then((value) {
-          companyInfoList.add(value);
-          companyInfoList.sort((a, b) => a.name.compareTo(b.name));
-          print(companyInfoList.length);
-        });
-      }
-    }
 
     return Column(
       children: [

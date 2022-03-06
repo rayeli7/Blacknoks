@@ -15,8 +15,8 @@ Future<String> sellAsset(
         .doc(currentStockName);
     return FirebaseFirestore.instance.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(documentReference);
-      var newVolume = snapshot['Volume'] - value;
-      var newCost = snapshot['Cost'] - cost;
+      var newVolume = double.parse(snapshot['Volume']) - value;
+      var newCost = double.parse(snapshot['Cost']) - cost;
       var newPrice = newCost / newVolume;
       if (newVolume == 0) {
         documentReference.delete();
@@ -26,10 +26,13 @@ Future<String> sellAsset(
         response = ("you don't have enough $currentStockName assets");
         return (response);
       }
-      transaction.update(documentReference,
-          {'Volume': newVolume, 'Price': newPrice, 'Cost': newCost});
-      response = ("Success");
-      return (response);
+      transaction.update(documentReference, {
+        'Volume': newVolume.toString(),
+        'Price': newPrice.toString(),
+        'Cost': newCost.toString()
+      });
+      response = "Success";
+      return response;
     });
   } catch (e) {
     return 'failed';

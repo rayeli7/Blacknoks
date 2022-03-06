@@ -23,10 +23,10 @@ class PortfolioListWidget extends StatelessWidget {
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             children: snapshots.data!.docs.map((document) {
-              double price = document['Price'];
+              double price = double.parse(document['Price']);
               // ignore: unused_local_variable
-              double cost = document['Cost'];
-              double volume = document['Volume'];
+              String cost = document['Cost'];
+              String volume = document['Volume'];
               String stockTicker = document.id;
               var livestockdata = (_p.livestockdata)
                   .where((element) => element.name == stockTicker);
@@ -39,7 +39,7 @@ class PortfolioListWidget extends StatelessWidget {
                   stockTicker: stockTicker,
                   currentStockPrice: currentStockPrice,
                   price: price,
-                  volume: volume,
+                  volume: double.parse(volume),
                   changeValue: changeValue,
                 ),
                 openBuilder: (context, action) => ModalBottomSheet(
