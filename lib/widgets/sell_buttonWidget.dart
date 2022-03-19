@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import '../services/sell_asset.dart';
 
-
 class SellButtonWidget extends StatelessWidget {
   const SellButtonWidget({
     Key? key,
@@ -32,14 +31,23 @@ class SellButtonWidget extends StatelessWidget {
           primary: Colors.red,
         ),
         onPressed: () async {
-          String response = await sellAsset(currentStockName!,
-              stockOrderVolumeController.text, currentStockPrice);
-
-          Flushbar(
-            title: "Sell Asset",
-            message: response,
-            duration: const Duration(seconds: 2),
-          ).show(context).then((value) => Navigator.pop(context));
+          showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                    title: Text('Transaction'),
+                    content: Text('Transaction Processing...'),
+                  )).then((value) => Future.delayed(Duration(seconds: 3), () {
+                Navigator.pop(context);
+              }));
+          await sellAsset(currentStockName!, stockOrderVolumeController.text,
+                  currentStockPrice)
+              .then((response) {
+            Flushbar(
+              title: "Sell Asset",
+              message: response,
+              duration: const Duration(seconds: 2),
+            ).show(context).then((value) => Navigator.pop(context));
+          });
         },
         child: const Text(
           'Sell',

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:blacknoks/models/livestockdata_model.dart';
 import 'package:flutter/foundation.dart';
@@ -9,9 +10,11 @@ import 'api(s)/fetch_api.dart';
 class LiveProvider extends ChangeNotifier {
   List<LiveStockData> livestockdata = <LiveStockData>[];
   bool isLoading = false;
+  bool isConnected = true;
 
   void getLiveStockData() {
     isLoading = true;
+    isConnected = true;
     API.getLiveStockData().then((value) {
       Iterable list = json.decode(value.body);
       livestockdata =
@@ -23,13 +26,20 @@ class LiveProvider extends ChangeNotifier {
             companyInfoList.sort((a, b) => a.name.compareTo(b.name));
             print(companyInfoList.length);
           });
-        }}
-        isLoading = false;
-        notifyListeners();
-    }).catchError((onError) {
+        }
+      }
       isLoading = false;
       notifyListeners();
-      print("===onError $onError");
+    }).catchError((onError) {
+      if (onError.runtimeType == SocketException) {
+        isConnected = false;
+        notifyListeners();
+      }
+      isLoading = false;
+      notifyListeners();
+      if (kDebugMode) {
+        print("Livedata_provider error ${onError.runtimeType}");
+      }
     });
   }
 }

@@ -31,16 +31,23 @@ class BuyButtonWidget extends StatelessWidget {
           maximumSize: const Size(150, 100),
         ),
         onPressed: () async {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                    title: Text('Transaction'),
+                    content: Text('Transaction Processing...'),
+                  )).then((value) => Future.delayed(Duration(seconds: 3), () {
+                Navigator.pop(context);
+              }));
+
           FlutterWaveResponse response = await buyAsset(currentStockName!,
               stockOrderVolumeController.text, currentStockPrice);
-
-          Navigator.pop(context);
 
           Flushbar(
             title: response.status,
             message: response.message,
             duration: const Duration(seconds: 5),
-          ).show(context);
+          ).show(context).then((value) => Navigator.pop(context));
         },
         child: const Text(
           'Buy',

@@ -34,9 +34,9 @@ Future<FlutterWaveResponse> buyAsset(
         });
         return finalResponse;
       }
-      var newVolume = snapshot['Volume'] + value;
-      double newCost = snapshot['Cost'] + cost;
-      var newPrice = newCost / newVolume;
+      double newVolume = double.parse(snapshot['Volume']) + value;
+      double newCost = double.parse(snapshot['Cost']) + cost;
+      double newPrice = newCost / newVolume;
       FlutterWaveResponse finalResponse =
           await FlutterWaveApi.postRequestToPay(cost, currentStockName)
               .then((response) {
@@ -58,8 +58,7 @@ Future<FlutterWaveResponse> buyAsset(
     final FlutterWaveResponse error = FlutterWaveResponse(
         status: 'Failed',
         message: "Error, Transaction did not complete\n${e.toString()}",
-        meta: Meta(authorization: Authorization(mode: "", redirect: ""))
-        );
+        meta: Meta(authorization: Authorization(mode: "", redirect: "")));
     return error;
   }
 }

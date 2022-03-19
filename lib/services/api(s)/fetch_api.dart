@@ -11,6 +11,7 @@ const baseInfoUrl =
     "https://dev.kwayisi.org/apis/gse/equities/"; //change url variable names
 
 class API {
+  
   static Future getLiveStockData() {
     var url = baseUrl;
     return http.get(Uri.parse(url));
