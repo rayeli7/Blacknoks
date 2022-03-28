@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:blacknoks/models/livestockdata_model.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 import 'api(s)/fetch_api.dart';
 
@@ -30,15 +28,13 @@ class LiveProvider extends ChangeNotifier {
       }
       isLoading = false;
       notifyListeners();
-    }).catchError((onError) {
-      if (onError.runtimeType == SocketException) {
-        isConnected = false;
-        notifyListeners();
-      }
+    }).catchError((error) {
+      isConnected = false;
+      notifyListeners();
       isLoading = false;
       notifyListeners();
       if (kDebugMode) {
-        print("Livedata_provider error ${onError.runtimeType}");
+        print("Livedata_provider error ${error.runtimeType}");
       }
     });
   }

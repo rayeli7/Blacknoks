@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 import 'package:provider/provider.dart';
 
+import '../main.dart';
 import '../services/api(s)/fetch_api.dart';
 import '../services/livedata_provider.dart';
 
@@ -29,16 +30,29 @@ class GSEMarketsPage extends StatelessWidget {
     return !Provider.of<LiveProvider>(context).isConnected
         ? Stack(
             children: <Widget>[
-              EmptyWidget(
-                title: "Bad Connection",
-                subTitle: "Kindly Check Your Internet Connection And Retry",
-                image: null,
+              Container(
+                child: EmptyWidget(
+                  title: "Bad Connection",
+                  subTitle: "Kindly Check Your Internet Connection And Retry",
+                  image: null,
+                ),
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    Provider.of<LiveProvider>(context, listen: false);
-                  },
-                  child: Text("${Icons.refresh_rounded} Retry"))
+              Container(
+                alignment: Alignment.bottomCenter,
+                child: ElevatedButton.icon(
+                    onPressed: () {
+                      var p = Provider.of<LiveProvider>(context, listen: false);
+                      p.getLiveStockData();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AuthenticationWrapper(),
+                        ),
+                      );
+                    },
+                    icon: Icon(Icons.refresh_rounded),
+                    label: Text("Retry")),
+              )
             ],
           )
         : Column(

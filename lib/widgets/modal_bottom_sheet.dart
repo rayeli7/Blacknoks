@@ -1,5 +1,7 @@
+import 'package:blacknoks/services/asset_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import 'buy_buttonWidget.dart';
 import 'sell_buttonWidget.dart';
@@ -13,25 +15,26 @@ class ModalBottomSheet extends StatelessWidget {
     changeValue,
   }) : super(key: key);
 
-  final TextEditingController stockOrderVolumeController =
-      TextEditingController(text: '100');
   final double? currentStockPrice;
   final String? currentStockName;
   final bool showSellButton;
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _p =
+        Provider.of<AssetProvider>(context).stockOrderVolumeController;
     return Container(
       height: MediaQuery.of(context).size.height,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(1),
       ),
-      child: ListView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const ListTile(),
           TextField(
-            controller: stockOrderVolumeController,
+            controller:
+                Provider.of<AssetProvider>(context).stockOrderVolumeController,
             keyboardType: TextInputType.number,
             style: Theme.of(context).textTheme.headline4,
             decoration: const InputDecoration(
@@ -44,7 +47,6 @@ class ModalBottomSheet extends StatelessWidget {
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
             ],
-            onChanged: (String stockOrderVolumeController) {},
           ),
           const SizedBox(height: 8),
           Container(
@@ -67,7 +69,7 @@ class ModalBottomSheet extends StatelessWidget {
                     const TextSpan(text: '₵ ', style: TextStyle(fontSize: 27)),
                     TextSpan(
                         text:
-                            '${double.parse(((currentStockPrice! * int.parse(stockOrderVolumeController.text)).toStringAsFixed(2)))} of $currentStockName Stocks')
+                            '${double.parse(((currentStockPrice! * int.parse((_p.text == '') ? '0' : _p.text)).toStringAsFixed(2)))} of $currentStockName Stocks')
                   ]),
             ),
           ),
@@ -76,12 +78,12 @@ class ModalBottomSheet extends StatelessWidget {
             children: [
               BuyButtonWidget(
                   currentStockName: currentStockName,
-                  stockOrderVolumeController: stockOrderVolumeController,
+                  stockOrderVolumeController: _p.text,
                   currentStockPrice: currentStockPrice),
               showSellButton
                   ? SellButtonWidget(
                       currentStockName: currentStockName,
-                      stockOrderVolumeController: stockOrderVolumeController,
+                      stockOrderVolumeController: _p.text,
                       currentStockPrice: currentStockPrice)
                   : Container(),
             ],

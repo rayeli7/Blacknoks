@@ -1,7 +1,3 @@
-// ignore_for_file: file_names
-
-import 'package:another_flushbar/flushbar.dart' show Flushbar;
-import 'package:blacknoks/models/flutterwave_response_model.dart';
 import 'package:flutter/material.dart';
 
 import '../services/buy_asset.dart';
@@ -15,7 +11,7 @@ class BuyButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   final String? currentStockName;
-  final TextEditingController stockOrderVolumeController;
+  final String stockOrderVolumeController;
   final double? currentStockPrice;
 
   @override
@@ -30,25 +26,33 @@ class BuyButtonWidget extends StatelessWidget {
           minimumSize: const Size(150, 100),
           maximumSize: const Size(150, 100),
         ),
-        onPressed: () async {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                    title: Text('Transaction'),
-                    content: Text('Transaction Processing...'),
-                  )).then((value) => Future.delayed(Duration(seconds: 3), () {
-                Navigator.pop(context);
-              }));
-
-          FlutterWaveResponse response = await buyAsset(currentStockName!,
-              stockOrderVolumeController.text, currentStockPrice);
-
-          Flushbar(
-            title: response.status,
-            message: response.message,
-            duration: const Duration(seconds: 5),
-          ).show(context).then((value) => Navigator.pop(context));
-        },
+        onPressed: stockOrderVolumeController != ''
+            ? () async {
+                await buyAsset(currentStockName!, stockOrderVolumeController,
+                        currentStockPrice)
+                    .then((value) => showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                              title: Text(value.status),
+                              content: Text(value.message),
+                            )).then((value) => Navigator.pop(context)));
+              }
+            : () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                          title: Text('Empty Field'),
+                          content: Text('Volume Field Cannot Be Empty'),
+                          actions: <Widget>[
+                            new TextButton(
+                              child: new Text("OK"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        ));
+              },
         child: const Text(
           'Buy',
           textScaleFactor: 2.0,

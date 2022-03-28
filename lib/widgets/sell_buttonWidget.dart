@@ -1,9 +1,6 @@
-// ignore_for_file: file_names
-
-import 'package:another_flushbar/flushbar.dart' show Flushbar;
+import 'package:blacknoks/services/asset_provider.dart';
 import 'package:flutter/material.dart';
-
-import '../services/sell_asset.dart';
+import 'package:provider/provider.dart';
 
 class SellButtonWidget extends StatelessWidget {
   const SellButtonWidget({
@@ -14,7 +11,7 @@ class SellButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   final String? currentStockName;
-  final TextEditingController stockOrderVolumeController;
+  final String stockOrderVolumeController;
   final double? currentStockPrice;
 
   @override
@@ -30,24 +27,10 @@ class SellButtonWidget extends StatelessWidget {
           maximumSize: const Size(150, 100),
           primary: Colors.red,
         ),
-        onPressed: () async {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                    title: Text('Transaction'),
-                    content: Text('Transaction Processing...'),
-                  )).then((value) => Future.delayed(Duration(seconds: 3), () {
-                Navigator.pop(context);
-              }));
-          await sellAsset(currentStockName!, stockOrderVolumeController.text,
-                  currentStockPrice)
-              .then((response) {
-            Flushbar(
-              title: "Sell Asset",
-              message: response,
-              duration: const Duration(seconds: 2),
-            ).show(context).then((value) => Navigator.pop(context));
-          });
+        onPressed: () {
+          Provider.of<AssetProvider>(context, listen: false).sellAssets(context,
+              currentStockName, currentStockPrice, stockOrderVolumeController);
+          Navigator.pop(context);
         },
         child: const Text(
           'Sell',
