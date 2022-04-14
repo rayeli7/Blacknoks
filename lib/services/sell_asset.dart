@@ -33,6 +33,7 @@ Future<String> sellAsset(
           'Cost': newCost.toString()
         });
         response = "Success";
+        print(response);
         return response;
       } else {
         return "Error! You Have No $currentStockName Asse";

@@ -16,6 +16,7 @@ class SellButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var p = Provider.of<AssetProvider>(context);
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 4,
@@ -27,10 +28,31 @@ class SellButtonWidget extends StatelessWidget {
           maximumSize: const Size(150, 100),
           primary: Colors.red,
         ),
-        onPressed: () {
-          Provider.of<AssetProvider>(context, listen: false).sellAssets(context,
-              currentStockName, currentStockPrice, stockOrderVolumeController);
-          Navigator.pop(context);
+        onPressed: () async {
+          await Provider.of<AssetProvider>(context, listen: false).sellAssets(
+              context,
+              currentStockName,
+              currentStockPrice,
+              stockOrderVolumeController);
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Empty Field'),
+                  content: p.selling
+                      ? SingleChildScrollView(
+                          child: Center(child: CircularProgressIndicator()))
+                      : Text('Volume Field Cannot Be Empty'),
+                  actions: <Widget>[
+                    new TextButton(
+                      child: new Text("OK"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              });
         },
         child: const Text(
           'Sell',

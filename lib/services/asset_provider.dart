@@ -1,5 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
-import 'package:another_flushbar/flushbar_route.dart';
 import 'package:blacknoks/services/sell_asset.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -9,19 +7,16 @@ class AssetProvider extends ChangeNotifier {
   TextEditingController stockOrderVolumeController =
       TextEditingController(text: '100');
 
-  void sellAssets(
+  Future sellAssets(
       context, currentStockName, currentStockPrice, volume) async {
     selling = true;
-    await sellAsset(currentStockName, volume, currentStockPrice).then((value) {
+    await sellAsset(currentStockName, volume, currentStockPrice)
+        .whenComplete(() {
       selling = false;
       notifyListeners();
-      showFlushbar(context: context, flushbar: Flushbar(
-
-      ));
+      print("sell = false");
     });
   }
 
-  Future buyAssets()async{
-    
-  } 
+  Future buyAssets() async {}
 }

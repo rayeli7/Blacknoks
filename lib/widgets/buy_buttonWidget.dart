@@ -28,6 +28,7 @@ class BuyButtonWidget extends StatelessWidget {
         ),
         onPressed: stockOrderVolumeController != ''
             ? () async {
+                
                 await buyAsset(currentStockName!, stockOrderVolumeController,
                         currentStockPrice)
                     .then((value) => showDialog(
@@ -35,7 +36,15 @@ class BuyButtonWidget extends StatelessWidget {
                         builder: (BuildContext context) => AlertDialog(
                               title: Text(value.status),
                               content: Text(value.message),
-                            )).then((value) => Navigator.pop(context)));
+                              actions: <Widget>[
+                                new TextButton(
+                                  child: new Text("Close"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            )));
               }
             : () {
                 showDialog(
