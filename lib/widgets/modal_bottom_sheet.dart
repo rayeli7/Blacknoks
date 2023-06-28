@@ -36,7 +36,7 @@ class ModalBottomSheet extends StatelessWidget {
             controller:
                 Provider.of<AssetProvider>(context).stockOrderVolumeController,
             keyboardType: TextInputType.number,
-            style: Theme.of(context).textTheme.headline4,
+            style: Theme.of(context).textTheme.headlineMedium,
             decoration: const InputDecoration(
               labelText: 'Enter Volume',
               //errorText: ,

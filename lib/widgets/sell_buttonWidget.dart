@@ -24,9 +24,8 @@ class SellButtonWidget extends StatelessWidget {
       alignment: Alignment.center,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          minimumSize: const Size(150, 100),
+          minimumSize: const Size(150, 100), backgroundColor: Colors.red,
           maximumSize: const Size(150, 100),
-          primary: Colors.red,
         ),
         onPressed: () async {
           await Provider.of<AssetProvider>(context, listen: false).sellAssets(
