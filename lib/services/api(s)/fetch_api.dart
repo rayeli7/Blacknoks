@@ -11,7 +11,6 @@ const baseInfoUrl =
     "https://dev.kwayisi.org/apis/gse/equities/"; //change url variable names
 
 class API {
-  
   static Future getLiveStockData() {
     var url = baseUrl;
     return http.get(Uri.parse(url));
@@ -43,7 +42,6 @@ Future<CompanyInfo> getStockInfo(stockName) async {
   }
 }
 
-
 List<CompanyInfo> companyInfoList = <CompanyInfo>[];
 
 const GSE_Companies = [
@@ -52,6 +50,7 @@ const GSE_Companies = [
   'Agricultural Development Bank',
   'AngloGold Ashanti Limited',
   'Aluworks Limited',
+  'Asante Gold Corporation',
   'Benso Oil Palm Plantation Limited',
   'CAL Bank Limited',
   'Clydestone Ghana Limited',
