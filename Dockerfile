@@ -15,7 +15,7 @@ RUN rm flutter.tar.gz
 ENV PATH="/opt/flutter/bin:${PATH}"
 
 # Set the working directory for the container to the /app directory.
-WORKDIR /app
+WORKDIR /Blacknoks
 
 # Copy all files from the current directory (where the Dockerfile resides) to the container's working directory. This includes the Flutter app source code.
 COPY . .
