@@ -2,10 +2,12 @@
 FROM ubuntu:latest
 
 # Update and install necessary dependencies for building the Flutter app.
-RUN apt-get update && apt-get install -y git curl wget unzip xz-utils zip libglu1-mesa mesa-libGLU
+RUN apt-get update && apt-get install -y git curl wget unzip xz-utils zip libglu1-mesa
+
+# Specify desired Flutter SDK version
+ENV FLUTTER_VERSION 3.16.3  
 
 # Download the Flutter SDK archive with wget.
-ENV FLUTTER_VERSION 3.16.3  # Specify desired Flutter SDK version
 RUN wget -O flutter.tar.xz https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_$FLUTTER_VERSION-stable.tar.xz
 
 # Extract the Flutter SDK archive to the /opt directory.
