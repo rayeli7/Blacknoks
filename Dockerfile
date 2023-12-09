@@ -5,8 +5,7 @@ FROM ubuntu:latest
 RUN apt-get update && apt-get install -y git curl wget unzip
 
 # Download the Flutter SDK archive with wget.
-RUN wget -O flutter.tar.gz https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_x64.tar.gz
-
+RUN wget -O flutter.tar.gz https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.16.3-stable.tar.xz
 # Extract the Flutter SDK archive to the /opt directory.
 RUN tar -xf flutter.tar.gz -C /opt
 
