@@ -4,12 +4,17 @@ FROM ubuntu:latest
 # Update and install necessary dependencies for building the Flutter app.
 RUN apt-get update && apt-get install -y git curl wget unzip
 
-# Download the Flutter SDK archive.
-RUN curl -o flutter.tar.gz https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_x64.tar.gz
+# Download the Flutter SDK archive with wget.
+RUN wget -O flutter.tar.gz https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_x64.tar.gz
+
 # Extract the Flutter SDK archive to the /opt directory.
 RUN tar -xf flutter.tar.gz -C /opt
+
 # Remove the downloaded archive to save space in the image.
 RUN rm flutter.tar.gz
+
+# Set environment variable for Flutter path
+ENV PATH="/opt/flutter/bin:$PATH"
 
 # Add the Flutter bin directory to the PATH environment variable.
 ENV PATH="/opt/flutter/bin:${PATH}"
