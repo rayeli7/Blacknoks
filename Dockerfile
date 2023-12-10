@@ -2,35 +2,28 @@
 FROM ubuntu:latest
 
 # Update and install necessary dependencies for building the Flutter app.
-RUN apt-get update && apt-get install -y git curl wget unzip xz-utils zip libglu1-mesa mesa-libGLU
+RUN apt update && apt install -y curl git unzip xz-utils zip libglu1-mesa openjdk-8-jdk wget
 
-# Download the Flutter SDK archive with wget.
-ENV FLUTTER_VERSION 3.16.3  # Specify desired Flutter SDK version
-RUN wget -O flutter.tar.xz https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_$FLUTTER_VERSION-stable.tar.xz
+# Set up new user
+RUN useradd -ms /bin/bash developer
+USER developer
+WORKDIR /home/developer
 
-# Extract the Flutter SDK archive to the /opt directory.
-RUN tar -xf flutter.tar.xz -C /opt
+# Prepare Android directories and system variables
+RUN mkdir -p Android/sdk
+ENV ANDROID_SDK_ROOT /home/developer/Android/sdk
+RUN mkdir -p .android && touch .android/repositories.cfg
+# Set up Android SDK
+RUN wget -O sdk-tools.zip https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+RUN unzip sdk-tools.zip && rm sdk-tools.zip
+RUN mv tools Android/sdk/tools
+RUN cd Android/sdk/tools/bin && yes | ./sdkmanager --licenses
+RUN cd Android/sdk/tools/bin && ./sdkmanager "build-tools;29.0.2" "patcher;v4" "platform-tools" "platforms;android-29" "sources;android-29"
+ENV PATH "$PATH:/home/developer/Android/sdk/platform-tools"
 
-# Remove the downloaded archive to save space in the image.
-RUN rm flutter.tar.xz
-
-# Add the Flutter bin directory to the PATH environment variable.
-ENV PATH="/opt/flutter/bin:${PATH}"
-
-# Fix "dubious ownership" issue in the Flutter directory
-RUN git config --global --add safe.directory /opt/flutter
-
-# Clean the existing Pub cache
-RUN dart pub cache clean
-
-# Set the working directory for the container to the /app directory.
-WORKDIR /app
-
-# Copy all files from the current directory (where the Dockerfile resides) to the container's working directory. This includes the Flutter app source code.
-COPY . .
-
-# Install all Flutter dependencies for the app using the `pub get` command.
-RUN flutter pub get
-
-# Build the Flutter app for the web platform. 
-RUN flutter build web
+# Download Flutter SDK
+RUN git clone https://github.com/flutter/flutter.git
+ENV PATH "$PATH:/home/developer/flutter/bin"
+   
+# Run basic check to download Dark SDK
+RUN flutter doctor
