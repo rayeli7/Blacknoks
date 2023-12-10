@@ -13,6 +13,7 @@ WORKDIR /home/developer
 RUN mkdir -p Android/sdk
 ENV ANDROID_SDK_ROOT /home/developer/Android/sdk
 RUN mkdir -p .android && touch .android/repositories.cfg
+
 # Set up Android SDK
 RUN wget -O sdk-tools.zip https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
 RUN unzip sdk-tools.zip && rm sdk-tools.zip
